@@ -1,9 +1,9 @@
 WiiDataDownloader
 ===================
 
-**Die eingestellte Nightly/Beta Version des WiiDataDownloaders, nun auf GitHub!**
-Getestet unter Windows XP, Windows 7 und Windows 8, nur 32-Bit (sollte auch auf 64 Bit funktionieren).
-Der WiiDataDownloader - ursprünglich veröffentlicht im Jahr 2011 als "NUSL" - downloadet Dateien von den [WiiDatabase.de](http://wiidatabase.de) Servern, sodass du immer die aktuellsten Homebrews hast.
+**Die eingestellte Nightly/Beta Version des WiiDataDownloaders, nun auf GitHub!**  
+Getestet unter Windows XP, Windows 7 und Windows 8, nur 32-Bit (sollte auch auf 64 Bit funktionieren).  
+Der WiiDataDownloader - ursprünglich veröffentlicht im Jahr 2011 als "NUSL" - downloadet Dateien von den [WiiDatabase.de](http://wiidatabase.de) Servern, sodass du immer die aktuellsten Homebrews hast.  
 Veröffentlicht unter der GNU GENERAL PUBLIC LICENSE v3. Das heißt u.a., dass du den Code, wenn du ihn verwendest und/oder verändert hast, veröffentlicht musst. Aber das weißt du doch hoffentlich ;)
 
 ## Features:
@@ -29,5 +29,6 @@ Veröffentlicht unter der GNU GENERAL PUBLIC LICENSE v3. Das heißt u.a., dass d
 - [nircmd.exe](http://www.nirsoft.net/utils/nircmd.html)
 - [nusd.exe](https://github.com/wiiNinja/NUS.downloader.command.line)
 - [sfk.exe](http://stahlworks.com/dev/swiss-file-knife.html)
-- [wget.exe](http://gnuwin32.sourceforge.net/packages/wget.htm)
+- [wget.exe](http://gnuwin32.sourceforge.net/packages/wget.htm)  
+
 Die Dateien einfach in den "Support" Ordner kopieren.
