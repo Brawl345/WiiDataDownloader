@@ -26,9 +26,9 @@ Veröffentlicht unter der GNU GENERAL PUBLIC LICENSE v3. Das heißt u.a., dass d
 
 ## Benötigte Programme
 - [7za.exe](http://7-zip.org/download.html)
-- [nircmd.exe](http://www.nirsoft.net/utils/nircmd.html)
+- [nircmdc.exe](http://www.nirsoft.net/utils/nircmd.html)
 - [nusd.exe](https://github.com/wiiNinja/NUS.downloader.command.line)
 - [sfk.exe](http://stahlworks.com/dev/swiss-file-knife.html)
-- [wget.exe](http://gnuwin32.sourceforge.net/packages/wget.htm)  
+- [wget.exe](http://users.ugent.be/~bpuype/wget/#download)  
 
 Die Dateien einfach in den "Support" Ordner kopieren.

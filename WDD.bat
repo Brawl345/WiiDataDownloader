@@ -125,8 +125,8 @@ CLS
 ::<---- Erstellt einen Shortcut auf dem Desktop und im Startmenü ---->
 if /i "%shortcut%" EQU "1" goto:miniskip
 if /i "%shortcut%" EQU "1 " goto:miniskip
-Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.desktop$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
-Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.programs$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
+::Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.desktop$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
+::Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.programs$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
 echo set shortcut=1 >>temp\Optionen.bat
 :miniskip
 ::<---- Hiermit wird geprüft ob der User offline ist. Es wird eine simple .BATch gedownloadet.
@@ -145,6 +145,7 @@ TITLE WDD - Suche nach Updates...
 if exist temp\skipupdatecheck.txt goto:skipthings
 if exist version.bat del version.bat
 start /min/wait support\wget -t 3 "%updates%/version.bat"
+if not exist version.bat goto:failed
 call version.bat
 if exist version.bat del version.bat
 set updatedlname=WDD.zip
@@ -154,8 +155,12 @@ if /i "%currentversion%" GEQ "%newversion%" goto:betashit
 if /i "%currentversion%" NEQ "%newversion%" goto:update
 
 :failed
-echo   Die Suche nach Updates ist fehlgeschlagen!
-echo   berprfe deine Internet Verbindung und deine Firewall!
+CLS
+TITLE WDD - Das Update ist fehlgeschlagen
+%header%
+echo.
+echo			Die Suche nach Updates ist fehlgeschlagen!
+echo		 berprfe deine Internet Verbindung und deine Firewall!
 @ping 127.0.0.1 -n 3 -w 1000> nul
 goto:menu
 
