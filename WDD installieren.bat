@@ -14,6 +14,9 @@ del tmp.vbs
 exit
 
 :xp
-echo				Fehler: Windows XP wird nicht unterst?tzt!
+echo.
+echo.
+echo				Fehler: Windows XP wird nicht untersttzt!
+echo				Starte die "Installer.bat" direkt!
 pause>NUL
 exit

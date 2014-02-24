@@ -1,6 +1,7 @@
 @echo off
 :top
 CLS
+goto:pc
 ::<---- Wechsle ins WDD Verzeichnis ---->
 if exist "%userprofile%\dir.bat" call "%userprofile%\dir.bat"
 if exist "%userprofile%\dir.bat" del "%userprofile%\dir.bat"
@@ -20,6 +21,8 @@ ver | findstr /i "6\.1\." > nul
 IF %ERRORLEVEL% EQU 0 set OS=7
 ver | findstr /i "6\.2\." > nul
 IF %ERRORLEVEL% EQU 0 set OS=8
+ver | findstr /i "6\.3\." > nul
+IF %ERRORLEVEL% EQU 0 set OS=8.1
 if /i "%OS%" EQU "2000" goto:keinsupportmehr
 if /i "%OS%" EQU "2003" goto:keinsupport
 :nachoscheck
@@ -122,27 +125,27 @@ goto:onlinecheck
 
 :onlinecheck
 CLS
+if exist temp\skiponlinecheck.txt goto:skipthings
 ::<---- Erstellt einen Shortcut auf dem Desktop und im Startmenü ---->
-if /i "%shortcut%" EQU "1" goto:miniskip
-if /i "%shortcut%" EQU "1 " goto:miniskip
+::if /i "%shortcut%" EQU "1" goto:miniskip
+::if /i "%shortcut%" EQU "1 " goto:miniskip
 ::Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.desktop$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
 ::Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.programs$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
-echo set shortcut=1 >>temp\Optionen.bat
+::echo set shortcut=1 >>temp\Optionen.bat
 :miniskip
 ::<---- Hiermit wird geprüft ob der User offline ist. Es wird eine simple .BATch gedownloadet.
 ::Diese stellt die Offline Variable auf "1" - heiát: Du bist online!
 %header%
 echo.
 echo			Wir prfen, ob du gerade online bist...
-if exist temp\skiponlinecheck.txt goto:skipthings
 start /min/wait Support\wget -t 3 "%files%/checkconnect.bat"
 if exist checkconnect.bat call checkconnect.bat
 if /i "%offline%" EQU "1" goto:offline
 del checkconnect.bat
 CLS
 ::<---- Auto-Updater: NUSL Code ---->
-TITLE WDD - Suche nach Updates...
 if exist temp\skipupdatecheck.txt goto:skipthings
+TITLE WDD - Suche nach Updates...
 if exist version.bat del version.bat
 start /min/wait support\wget -t 3 "%updates%/version.bat"
 if not exist version.bat goto:failed
@@ -253,7 +256,6 @@ echo.
 echo			Hauptmen - Bitte w„hle eine Aktion:
 echo.
 echo			[1] Datenbank
-::echo			[2] Wii-Daten sichern
 echo.
 echo			[O] Optionen
 echo			[C] Credits
@@ -348,11 +350,10 @@ if /i "%wilbrandgui%" EQU "*" echo							  	 	 [10] WilBrand GUI
 echo.
 echo.
 echo			[D] Starte Download
-echo			[S2] Seite 2
 echo.
 echo			[DB] Mehr (Browser)
 echo			[M] Men
-echo			[0] WDD beenden
+echo			[B] WDD beenden
 echo.
 echo.
 set /p pc= 	Eingabe:		
@@ -370,11 +371,10 @@ if /i "%pc%" EQU "10" goto:activatewilbrandgui
 
 if /i "%pc%" EQU "D" goto:pcwarteschlange
 
-if /i "%pc%" EQU "k" goto:kanale
 if /i "%pc%" EQU "DB" start http://wiidatabase.de/downloads/pc-tools
 if /i "%pc%" EQU "DB" goto:datenbank
 if /i "%pc%" EQU "M" goto:menu
-if /i "%pc%" EQU "0" exit
+if /i "%pc%" EQU "B" exit
 
 
 set false=1
@@ -657,10 +657,12 @@ CLS
 echo.
 echo				Ich m”chte danken:
 echo.
-echo			DefenderX, pegelf, gantherfr, etc.
+echo			DefenderX, pegelf, Centzilius, gantherfr, ...
+echo			Kurz: Allen meinen Freunden!
+echo.
+echo			UND:
 echo			XFlak
 echo			Team Twiizers
-echo			Und allen anderen, die mich untersttzt haben...
 echo.
 echo			Drcke eine Taste...
 pause >NUL
