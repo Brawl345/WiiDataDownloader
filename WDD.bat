@@ -1,7 +1,6 @@
 @echo off
 :top
 CLS
-goto:pc
 ::<---- Wechsle ins WDD Verzeichnis ---->
 if exist "%userprofile%\dir.bat" call "%userprofile%\dir.bat"
 if exist "%userprofile%\dir.bat" del "%userprofile%\dir.bat"
