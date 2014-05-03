@@ -6,45 +6,22 @@ if exist "%userprofile%\dir.bat" call "%userprofile%\dir.bat"
 if exist "%userprofile%\dir.bat" del "%userprofile%\dir.bat"
 cd %curdir%
 COLOR 1F
-::<---- Hier werden alle Variablen gesetzt. Diese kˆnnen dann mittels Prozente (bspw. %currentversion%)
-::abgerufen werden. So kˆnnen sich immer ‰ndernde Inhalte abgerufen werden.---->
-ver | findstr /i "5\.0\." > nul
-IF %ERRORLEVEL% EQU 0 set OS=2000
-ver | findstr /i "5\.1\." > nul
-IF %ERRORLEVEL% EQU 0 set OS=XP
-ver | findstr /i "5\.2\." > nul
-IF %ERRORLEVEL% EQU 0 set OS=2003
-ver | findstr /i "6\.0\." > nul
-IF %ERRORLEVEL% EQU 0 set OS=Vista
-ver | findstr /i "6\.1\." > nul
-IF %ERRORLEVEL% EQU 0 set OS=7
-ver | findstr /i "6\.2\." > nul
-IF %ERRORLEVEL% EQU 0 set OS=8
-ver | findstr /i "6\.3\." > nul
-IF %ERRORLEVEL% EQU 0 set OS=8.1
-if /i "%OS%" EQU "2000" goto:keinsupportmehr
-if /i "%OS%" EQU "2003" goto:keinsupport
-:nachoscheck
-set currentversion=410
-set build=Nightly Build
+set currentversion=411
+set build=git
 set WDDpath=%cd%
 set offline=1
-::<---- Hier unten ist der Kernteil: Die URLs! Ohne die funktioniert die H‰lfte nicht!
-::Wir haben aus NUSL gelernt: Alle URLs manÅll austauschen ist auch doof.
-::So sind wir auch bei einem Umzug schnell bereit!
-::Auch Rechtschreibfehler sind damit Vergangenheit! ---->
+::<---- Hier unten ist der Kernteil: Die URLs! Ohne die funktioniert die H‰lfte nicht! -->
 set url=http://wiidatabase.de
 set urlwdd=http://wiidatabase.de/wdd
 set files=%url%/wddfiles
 set updates=%url%/wddfiles
 ::<---- URLs Ende.---->
-set Header=echo	    WiiDataDownloader %build% %currentversion% auf Windows %OS% - Heute ist der %DATE%
-set Nightly=support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20  [Red]Nightly Version - Bitte sei vorsichtig!
+set Header=echo	    WiiDataDownloader %build% %currentversion% - Heute ist der %DATE%
 mode con cols=85 lines=30
-TITLE WDD %currentversion% %build%
+TITLE WDD %build%-%currentversion%
 ::<---- Es gibt Programme, die Antivirentools f‰lschlicherweise als Virus erkennen.
 ::Hiermit wird gepr¸ft, ob ein Antivirusprogramm die Dateien gelˆscht hat. Dem User wird
-::dann eine Nachricht eingeblendet. Die Dateien werden NICHT neu gedownloadet. ---->
+::dann eine Nachricht eingeblendet. Die Dateien werden NICHT neu gedownloadet (da sinnlos, wegen neuer Warnung)! ---->
 :check
 if not exist Support\nusd.exe goto:fehlt
 if not exist Support\sfk.exe goto:fehlt
@@ -76,64 +53,15 @@ exit
 :title
 CLS
 if not exist temp md temp
-::<---- Hier werden die Optionen geladen. Diese halten z.B. fest, ob du bestimmte Warnungen schon gesehen hast.
-::Ein Reset des Downloaders ist immer mit einer Lˆschung der Optionen verbunden! ---->
+::<---- Hier werden die Optionen geladen. Diese halten z.B. fest, ob du bestimmte Warnungen schon gesehen hast. ---->
 if exist temp\Optionen.bat call temp\Optionen.bat
-if /i "%Titel gesehen%" EQU "1 " goto:nightly
-%header%
-echo.
-echo			Bitte lade den WiiDataDownloader nur von der WiiDatabase!
-echo			Wir empfehlen dir, WDD erneut zu downloaden und zu installieren,
-echo			wenn du ihn von einer fremden Seite hast!
-echo.
-echo			Bitte warten! Es geht gleich weiter...
-::<---- Damit wird diese (nervige) Meldung nicht immer angezeigt. Dies wird in den Optionen gespeichert! ---->
-echo set Titel gesehen=1 >>temp\Optionen.bat
-@ping 127.0.0.1 -n 4 -w 1000> nul
-
-:nightly
-CLS
-%header%
-echo.
-::<---- Besitzt der User keine Nightly Version, dann wird die Warnung unten nicht angezeigt ---->
-if /i "%build%" NEQ "Nightly Build" goto:onlinecheck
-if /i "%Nightlywarnung%" EQU "0 " goto:onlinecheck
-echo		  	Du benutzt eine Nightly Version!
-echo.		Diese ist nur fÅr Testzwecke!
-echo		WDD kann jederzeit abstÅrzen oder anders reagieren, als gewÅnscht!
-echo		Um Bugs zu melden, benutze bitte die Bugs melden Funktion im MenÅ!
-echo			DrÅcke eine Taste um fortzufahren.
-pause >NUL
-echo set Nightlywarnung=0 >>temp\Optionen.bat
-goto:onlinecheck
-
-:firststartup
-CLS
-%header%
-%nightly%
-echo.
-::<---- Hier werden die Optionen vorgenommen. Diese werden nur einmal vorgenommen. In den st‰ndig sich-‰ndernden
-::Nightly Builds kann es passieren, dass neÅ Optionen hinzukommen. Diese m¸ssen dann manÅll gesetzt werden! ---->
-echo		Willkommen beim WiiDataDownloader! Du benutzt momentan %currentversion% %build%
-echo.
-echo.
-echo			Momentan gibt es keine Optionen zum Festlegen.
-echo			DrÅcke bitte eine Taste, um fortzufahren!
-pause >NUL
-goto:onlinecheck
 
 :onlinecheck
 CLS
 if exist temp\skiponlinecheck.txt goto:skipthings
-::<---- Erstellt einen Shortcut auf dem Desktop und im Startmen¸ ---->
-::if /i "%shortcut%" EQU "1" goto:miniskip
-::if /i "%shortcut%" EQU "1 " goto:miniskip
-::Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.desktop$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
-::Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.programs$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
-::echo set shortcut=1 >>temp\Optionen.bat
 :miniskip
 ::<---- Hiermit wird gepr¸ft ob der User offline ist. Es wird eine simple .BATch gedownloadet.
-::Diese stellt die Offline Variable auf "1" - hei·t: Du bist online!
+::Diese stellt die Offline Variable auf "1" - heiﬂt: Du bist online! ---->
 %header%
 echo.
 echo			Wir prÅfen, ob du gerade online bist...
@@ -142,7 +70,7 @@ if exist checkconnect.bat call checkconnect.bat
 if /i "%offline%" EQU "1" goto:offline
 del checkconnect.bat
 CLS
-::<---- Auto-Updater: NUSL Code ---->
+::<---- Auto-Updater ---->
 if exist temp\skipupdatecheck.txt goto:skipthings
 TITLE WDD - Suche nach Updates...
 if exist version.bat del version.bat
@@ -153,7 +81,7 @@ if exist version.bat del version.bat
 set updatedlname=WDD.zip
 set UpdateDLlink=%updates%/WDD.zip
 if /i "%currentversion%" EQU "%newversion%" goto:aktuell
-if /i "%currentversion%" GEQ "%newversion%" goto:betashit
+if /i "%currentversion%" GEQ "%newversion%" goto:neuer
 if /i "%currentversion%" NEQ "%newversion%" goto:update
 
 :failed
@@ -172,7 +100,7 @@ set update=aktuell
 goto:menu
 
 
-:betashit
+:neuer
 cls
 %header%
 echo.
@@ -219,7 +147,6 @@ set update=skipped
 goto:menu
 
 :menu
-::if /i "%offline%" EQU "1" goto:onlinecheck
 ::<---- Hier werden die Downloadvariablen gelˆscht --->
 set customizemii=
 set devkitppc=
@@ -236,7 +163,6 @@ mode con cols=85 lines=30
 TITLE WDD - WÑhle eine Aktion...
 ::<---- WDD GO! ---->
 %header%
-%Nightly%
 if /i "%false%" EQU "1" echo.
 if /i "%false%" EQU "1" echo		 %menu% ist keine gÅltige Eingabe.
 if /i "%false%" EQU "1" echo		 Bitte versuche es erneut!
@@ -313,7 +239,6 @@ CLS
 mode con cols=100 lines=50
 TITLE WDD - WÑhle Programme...
 %header%
-%Nightly%
 if /i "%false%" EQU "1" echo.
 if /i "%false%" EQU "1" echo		 %pc% ist keine gÅltige Eingabe.
 if /i "%false%" EQU "1" echo		 Bitte versuche es erneut!
@@ -666,22 +591,3 @@ echo.
 echo			DrÅcke eine Taste...
 pause >NUL
 goto:menu
-
-:keinsupportmehr
-CLS
-echo.
-echo				Du verwendest Windows 2000.
-echo				Diese Version wird von WDD nicht unterstuetzt!
-echo				WDD wird mit einem Tastendruck beendet...
-pause >NUL
-exit
-
-:keinsupport
-CLS
-echo.
-echo				Du verwendest Windows %OS%!
-echo			WDD unterstuetzt diese Systeme, wurde aber nicht darauf getestet!
-echo				Fahre auf eigenes Risikio fort!
-echo					DrÅcke eine Taste!
-pause>NUL
-goto:nachoscheck
