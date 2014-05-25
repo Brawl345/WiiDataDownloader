@@ -2,19 +2,20 @@
 :top
 CLS
 ::<---- Wechsle ins WDD Verzeichnis ---->
-if exist "%userprofile%\dir.bat" call "%userprofile%\dir.bat"
-if exist "%userprofile%\dir.bat" del "%userprofile%\dir.bat"
-cd %curdir%
+(if exist "%TEMP%\dir.bat" call "%TEMP%\dir.bat") && (if exist "%TEMP%\dir.bat" del "%TEMP%\dir.bat")
+cd %curdir% >NUL
 COLOR 1F
-set currentversion=411
+set currentversion=412
 set build=git
 set WDDpath=%cd%
 set offline=1
 ::<---- Hier unten ist der Kernteil: Die URLs! Ohne die funktioniert die H‰lfte nicht! -->
-set url=http://wiidatabase.de
-set urlwdd=http://wiidatabase.de/wdd
-set files=%url%/wddfiles
-set updates=%url%/wddfiles
+set url=http://wdd.wiidatabase.de
+set urlwdd=http://wdd.wiidatabase.de
+set files=%url%/files
+set updates=%files%/update
+set updatedlname=WDD.zip
+set UpdateDLlink=%updates%/%updatedlname%
 ::<---- URLs Ende.---->
 set Header=echo	    WiiDataDownloader %build% %currentversion% - Heute ist der %DATE%
 mode con cols=85 lines=30
@@ -58,28 +59,19 @@ if exist temp\Optionen.bat call temp\Optionen.bat
 
 :onlinecheck
 CLS
-if exist temp\skiponlinecheck.txt goto:skipthings
+if exist temp\skipchecks.txt goto:skipthings
 :miniskip
-::<---- Hiermit wird gepr¸ft ob der User offline ist. Es wird eine simple .BATch gedownloadet.
-::Diese stellt die Offline Variable auf "1" - heiﬂt: Du bist online! ---->
+::<---- Hier werden verschiedene Variablen, wie Version, etc. gesetzt
 %header%
 echo.
-echo			Wir prÅfen, ob du gerade online bist...
-start /min/wait Support\wget -t 3 "%files%/checkconnect.bat"
-if exist checkconnect.bat call checkconnect.bat
+echo			Initialisieren...
+start /min/wait Support\wget -t 3 "%updates%/initialize.bat"
+if exist initialize.bat call initialize.bat
 if /i "%offline%" EQU "1" goto:offline
-del checkconnect.bat
-CLS
+del initialize.bat
 ::<---- Auto-Updater ---->
-if exist temp\skipupdatecheck.txt goto:skipthings
 TITLE WDD - Suche nach Updates...
-if exist version.bat del version.bat
-start /min/wait support\wget -t 3 "%updates%/version.bat"
-if not exist version.bat goto:failed
-call version.bat
-if exist version.bat del version.bat
-set updatedlname=WDD.zip
-set UpdateDLlink=%updates%/WDD.zip
+if /i "%newversion%" EQU "" goto:failed
 if /i "%currentversion%" EQU "%newversion%" goto:aktuell
 if /i "%currentversion%" GEQ "%newversion%" goto:neuer
 if /i "%currentversion%" NEQ "%newversion%" goto:update
@@ -96,8 +88,7 @@ goto:menu
 
 
 :aktuell
-set update=aktuell
-goto:menu
+(set update=aktuell) && (goto:menu)
 
 
 :neuer
@@ -120,8 +111,6 @@ Support\sfk echo -spat \x20 \x20 \x20 [Red] Deine Version ist nicht aktuell!
 start Support\dialogs\update.vbs
 echo.
 echo			WDD aktualisiert sich jetzt auf v%newversion%...
-echo				Wir starten jetzt deinen Browser...
-start %urlwdd%\changelog
 start /min/wait support\wget -t 3 "%UpdateDLlink%"
 echo.
 Support\7za x -aoa WDD.zip -r
@@ -137,14 +126,13 @@ CLS
 %header%
 echo.
 echo 			Du bist offline :(
-echo			Bitte gehe wieder online...
+echo			Bitte gehe wieder online.
 echo		 Beende WDD mit einem Tastendruck...
 pause >NUL
 exit
 
 :skipthings
-set update=skipped
-goto:menu
+(set update=skipped) && (goto:menu)
 
 :menu
 ::<---- Hier werden die Downloadvariablen gelˆscht --->
@@ -166,9 +154,6 @@ TITLE WDD - WÑhle eine Aktion...
 if /i "%false%" EQU "1" echo.
 if /i "%false%" EQU "1" echo		 %menu% ist keine gÅltige Eingabe.
 if /i "%false%" EQU "1" echo		 Bitte versuche es erneut!
-if /i "%false%" EQU "2" echo.
-if /i "%false%" EQU "2" echo		 Dieser Bereich ist noch nicht fertig!
-if /i "%false%" EQU "2" echo		 Versuche es bald nochmal!
 set menu=
 set false=0
 echo.
@@ -199,10 +184,6 @@ if /i "%menu%" EQU "0" exit
 if /i "%menu%" EQU "B" goto:bug
 
 set false=1
-goto:menu
-
-:soon
-set false=2
 goto:menu
 
 :optionen
@@ -339,8 +320,8 @@ if /i "%wilbrandgui%" EQU "*" (set wilbrandgui=) else (set wilbrandgui=*)
 goto:pc
 
 :pcwarteschlange
-::<---- Das Herzst¸ck des WDD: Die Warteschlange und der anschlie·ende Download! ---->
-::<---- ZÅrst wird gez‰hlt, wieviel gedownloadet wird ---->
+::<---- Das Herzst¸ck des WDD: Die Warteschlange und der anschlieﬂende Download! ---->
+::<---- ZueeÅrst wird gez‰hlt, wieviel gedownloadet wird ---->
 if exist temp\DLnames.txt del temp\DLnames.txt>nul
 setlocal ENABLEDELAYEDEXPANSION
 SET DLTOTAL=0
@@ -572,7 +553,7 @@ echo Bitte wÑhle zÅrst Downloads aus!
 goto:pc
 
 :bug
-start %url%/kontakt
+start https://github.com/Brawl345/WiiDataDownloader/issues
 goto:menu
 
 :thankyou

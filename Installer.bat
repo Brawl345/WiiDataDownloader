@@ -1,84 +1,72 @@
 @echo off
 COLOR 1F
+set url=http://wdd.wiidatabase.de
+set updates=%url%/files/update
+set updatedlname=WDD.zip
+set UpdateDLlink=%updates%/%updatedlname%
+set offline=1
 TITLE WDD Installer
-if exist "%userprofile%\dir.bat" call "%userprofile%\dir.bat"
-if exist "%userprofile%\dir.bat" del "%userprofile%\dir.bat"
-cd %curdir%
+(if exist "%TEMP%\dir.bat" call "%TEMP%\dir.bat") && (if exist "%TEMP%\dir.bat" del "%TEMP%\dir.bat")
+cd %curdir% >NUL
+if not exist wget.exe goto:failed
+if not exist 7za.exe goto:failed
+
 :top
-echo.
 CLS
 echo		Willkommen beim WiiDataDownloader Installer!
-echo						Bitte warte!
-if exist checkconnect.bat call checkconnect.bat
-start /min/wait wget -t 3 "http://wiidatabase.de/wddfiles/checkconnect.bat"
-if /i "%offline%" EQU "1" goto:offline
-del checkconnect.bat
-if exist version.bat del version.bat
-start /min/wait wget -t 3 "http://wiidatabase.de/wddfiles/version.bat"
-call version.bat
-if exist version.bat del version.bat
+echo					Bitte warte!
+start /min/wait wget -t 3 "%updates%/initialize.bat"
+if exist initialize.bat call initialize.bat
+if /i "%offline%" EQU "1" goto:failed
+del initialize.bat
+if exist %updatedlname% del %updatedlname%
 echo		 Wir downloaden gerade die neueste Version... (v%newversion%)
-start /min/wait wget -t 3 http://wiidatabase.de/wddfiles/WDD.zip
-if not exist wdd.zip goto:failed
+start /min/wait wget -t 3 "%UpdateDLlink%"
+if not exist %updatedlname% goto:failed
+
 :choose
 CLS
 set pfad=
 echo			Wohin soll WDD installiert werden?
 echo.
 echo			[1] %cd%\WDD
-echp			[2] %userprofile%\Documents\WDD
+echo			[2] %userprofile%\Documents\WDD
 echo			[3] %userprofile%\Desktop\WDD
 echo			[4] %homedrive%\Program Files\WDD
 echo			[5] %homedrive%\WDD
 echo.
-set /i pfad= 	Eingabe:
+set /p pfad= 	Eingabe:		
 
-if /i "%pfad%" EQU "1" set pfad=%cd%\WDD
-if /i "%pfad%" EQU "1" goto:install
+if /i "%pfad%" EQU "1" (set pfad=%cd%\WDD) && (goto:install)
 
-if /i "%pfad%" EQU "2" set pfad=%userprofile%\Documents\WDD
-if /i "%pfad%" EQU "2" goto:install
+if /i "%pfad%" EQU "2" (set pfad=%userprofile%\Documents\WDD) && (goto:install)
 
-if /i "%pfad%" EQU "3" set pfad=%userprofile%\Desktop\WDD
-if /i "%pfad%" EQU "3" goto:install
+if /i "%pfad%" EQU "3" (set pfad=%userprofile%\Desktop\WDD) && (goto:install)
 
-if /i "%pfad%" EQU "4" set pfad=%homedrive%\Program Files\WDD
-if /i "%pfad%" EQU "4" goto:install
+if /i "%pfad%" EQU "4" (set (pfad=%homedrive%\Program Files\WDD) && (goto:install)
 
-if /i "%pfad%" EQU "5" set pfad=%homedrive%\WDD
-if /i "%pfad%" EQU "5" goto:install
+if /i "%pfad%" EQU "5" (set pfad=%homedrive%\WDD) && (goto:install)
 
 goto:choose
 
 :install
 CLS
 echo				 OK! Wir installieren WDD in:
-echo %pfad%
+echo 			%pfad%
 echo						Entpacke...
-if not exist %pfad% mkdir %pfad%
-7za e -aoa wdd.zip -o%pfad% -r
+if not exist "%pfad%" mkdir "%pfad%"
+start /min/wait 7za x -aoa %updatedlname% -o"%pfad%" -r
+del %updatedlname%
 :ende
 echo.
 echo						Starte WDD...
-call "%pfad%\Starte WDD.bat"
-exit
-
-
-:offline
-CLS
-echo		Willkommen beim WiiDataDownloader Installer!
-echo						Bitte warte!
-echo		  Du bist offline! Bitte gehe wieder online!
-echo				 Druecke eine Taste!
-pause >NUL
+echo set curdir=%pfad%>>%TEMP%\dir.bat
+(cd %pfad%) && (start WDD.bat)
 exit
 
 :failed
-CLS
-echo		Willkommen beim WiiDataDownloader Installer!
-echo						Bitte warte!
-echo		 Wir downloaden gerade die neueste Version... (v%newversion%)
-echo					Download fehlgeschlagen!
-echo				 	 Druecke eine Taste!
+echo.
+echo				Installation fehlgeschlagen!
+echo				  Druecke eine Taste!
 pause >NUL
 exit

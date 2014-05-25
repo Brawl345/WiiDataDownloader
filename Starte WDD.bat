@@ -5,7 +5,7 @@ ver | findstr /i "5\.1\." > nul
 IF %ERRORLEVEL% EQU 0 set OS=XP
 if /i "%OS%" EQU "XP" goto:xp
 TITLE Bitte warten...
-echo set curdir=%cd%>>%userprofile%\dir.bat
+echo set curdir=%cd%>>%TEMP%\dir.bat
 echo Set UAC = CreateObject("Shell.Application") >>tmp.vbs
 echo UAC.ShellExecute "WDD.bat", "", "", "runas", 1 >>tmp.vbs
 "tmp.vbs"
