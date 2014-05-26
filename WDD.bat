@@ -5,8 +5,8 @@ CLS
 (if exist "%TEMP%\dir.bat" call "%TEMP%\dir.bat") && (if exist "%TEMP%\dir.bat" del "%TEMP%\dir.bat")
 cd %curdir% >NUL
 COLOR 1F
-set currentversion=412
-set build=git
+set currentversion=413
+set build=Pre-Alpha
 set WDDpath=%cd%
 set offline=1
 ::<---- Hier unten ist der Kernteil: Die URLs! Ohne die funktioniert die H‰lfte nicht! -->
@@ -17,7 +17,7 @@ set updates=%files%/update
 set updatedlname=WDD.zip
 set UpdateDLlink=%updates%/%updatedlname%
 ::<---- URLs Ende.---->
-set Header=echo	    WiiDataDownloader %build% %currentversion% - Heute ist der %DATE%
+set Header=echo	    WiiDataDownloader %build% r%currentversion% - Heute ist der %DATE%
 mode con cols=85 lines=30
 TITLE WDD %build%-%currentversion%
 ::<---- Es gibt Programme, die Antivirentools f‰lschlicherweise als Virus erkennen.
@@ -95,11 +95,11 @@ goto:menu
 cls
 %header%
 echo.
-Support\sfk echo -spat \x20 \x20 [Yellow] Das Update ist fehlgeschlagen!
-Support\sfk echo -spat \x20 \x20 [Yellow] Bitte stelle die Version zurÅck!
+Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow] Das Update ist fehlgeschlagen!
+Support\sfk echo -spat \x20  \x20 \x20 \x20 \x20 \x20 \x20 [Yellow] Bitte stelle die Version zurÅck!
 echo.
-echo			Aktuelle Version: %newversion%
-echo			Deine    Version: %currentversion%
+echo				Aktuelle Version: %newversion%
+echo				Deine    Version: %currentversion%
 @ping 127.0.0.1 -n 3 -w 1000> nul
 goto:menu
 
@@ -196,6 +196,7 @@ if /i "%false%" EQU "1" echo		 Bitte versuche es erneut!
 set optionen=
 echo.
 echo		[1] WDD Desktop-Shortcut erstellen
+echo		[2] WDD StartmenÅ-Shortcut erstellen
 echo.
 echo.
 echo		[0] Menue
@@ -203,6 +204,7 @@ echo.
 set /p optionen=	Eingabe:	
 
 if /i "%optionen%" EQU "1" goto:desktopshortcut
+if /i "%optionen%" EQU "2" goto:startmenushortcut
 if /i "%optionen%" EQU "0" goto:menu
 
 set false=1
@@ -211,6 +213,10 @@ goto:optionen
 
 :desktopshortcut
 Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.desktop$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
+goto:optionen
+
+:startmenushortcut
+Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.programs$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
 goto:optionen
 
 :datenbank
