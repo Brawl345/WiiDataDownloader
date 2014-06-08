@@ -49,7 +49,7 @@ if /i "%pfad%" EQU "2" (set pfad=%userprofile%\Documents\WDD) && (goto:install)
 
 if /i "%pfad%" EQU "3" (set pfad=%userprofile%\Desktop\WDD) && (goto:install)
 
-if /i "%pfad%" EQU "4" (set (pfad=%homedrive%\Program Files\WDD) && (goto:install)
+if /i "%pfad%" EQU "4" (set pfad=%homedrive%\Program Files\WDD) && (goto:install)
 
 if /i "%pfad%" EQU "5" (set pfad=%homedrive%\WDD) && (goto:install)
 
