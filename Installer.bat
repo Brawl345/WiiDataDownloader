@@ -74,7 +74,7 @@ goto:choose
 
 :programfiles
 if /i "%x64%" EQU "j" goto:programfiles64
-set pfad=%ProgramFiles%\Program Files\WDD
+set pfad=%ProgramFiles%\WDD
 goto:install
 :programfiles64
 set pfad=%ProgramFiles(x86)%\WDD
