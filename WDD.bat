@@ -370,7 +370,7 @@ goto:alledownloadsfertig
 
 
 :customizemii
-set md5=d14156cc170933b7efe669989b75fcd8
+set md5=e27125f54b03326ca6c512150f5f948f
 set namedl=CustomizeMii
 set name=customizemii.zip
 set variable=customizemii

@@ -11,6 +11,7 @@ cd %curdir% >NUL
 if not exist wget.exe goto:failed
 if not exist 7za.exe goto:failed
 if not exist sfk.exe goto:failed
+if exist "%homedrive%\Program Files (x86)" set x64=j
 
 :top
 CLS
@@ -37,7 +38,8 @@ echo.
 echo			[1] %cd%\WDD
 echo			[2] %userprofile%\Documents\WDD
 echo			[3] %userprofile%\Desktop\WDD
-echo			[4] %homedrive%\Program Files\WDD
+if /i "%x64%" NEQ "j" echo			[4] %ProgramFiles%\WDD
+if /i "%x64%" EQU "j" echo			[4] %ProgramFiles(x86)%\WDD
 echo			[5] %homedrive%\WDD
 echo			[6] Eigener Pfad
 echo.
@@ -56,7 +58,7 @@ if /i "%pfad%" EQU "2" (set pfad=%userprofile%\Documents\WDD) && (goto:install)
 
 if /i "%pfad%" EQU "3" (set pfad=%userprofile%\Desktop\WDD) && (goto:install)
 
-if /i "%pfad%" EQU "4" (set pfad=%homedrive%\Program Files\WDD) && (goto:install)
+if /i "%pfad%" EQU "4" goto:programfiles
 
 if /i "%pfad%" EQU "5" (set pfad=%homedrive%\WDD) && (goto:install)
 
@@ -69,6 +71,14 @@ if /i "%pfad%" EQU "0" exit
 
 set false=1
 goto:choose
+
+:programfiles
+if /i "%x64%" EQU "j" goto:programfiles64
+set pfad=%ProgramFiles%\Program Files\WDD
+goto:install
+:programfiles64
+set pfad=%ProgramFiles(x86)%\WDD
+goto:install
 
 :activatedestopshortcut
 if /i "%desktopshortcut%" EQU "*" (set desktopshortcut=) else (set desktopshortcut=*)
@@ -152,7 +162,7 @@ if /i "%startmenushortcut%" EQU "*" "%pfad%\Support\nircmd" shortcut "%pfad%\Sta
 echo.
 echo					Starte WDD...
 echo set curdir=%pfad%>>%TEMP%\dir.bat
-(cd %pfad%) && (start WDD.bat)
+(cd "%pfad%") && (start WDD.bat)
 exit
 
 :failed
