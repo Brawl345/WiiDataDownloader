@@ -19,7 +19,7 @@ echo			Willkommen beim WiiDataDownloader Installer!
 echo					Bitte warte!
 start /min/wait wget -t 3 "%updates%/initialize.bat"
 if exist initialize.bat call initialize.bat
-if /i "%offline%" EQU "1" goto:failed
+if /i "%offline%" EQU "1" (set errorcode=1) && (goto:failed)
 del initialize.bat
 if exist %updatedlname% del %updatedlname%
 
@@ -167,7 +167,11 @@ exit
 
 :failed
 echo.
+echo.
 echo				Installation fehlgeschlagen!
+echo.
+if /i "%errorcode%" EQU "1" echo			Verbindungsfehler! Hast du Internet?
+echo.
 echo				  Drcke eine Taste!
 pause >NUL
 exit
