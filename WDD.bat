@@ -5,7 +5,7 @@ CLS
 (if exist "%TEMP%\dir.bat" call "%TEMP%\dir.bat") && (if exist "%TEMP%\dir.bat" del "%TEMP%\dir.bat")
 cd %curdir% >NUL
 COLOR 1F
-set currentversion=415
+set currentversion=416
 set build=Pre-Alpha
 set WDDpath=%cd%
 set offline=1
@@ -384,7 +384,7 @@ set variable=devkitppc
 goto:startedownload
 
 :dmlizard
-set md5=ffd7448a8527b6bf42eb7b8bfdea1788
+set md5=f0f75945092f6c7224a7fed1b670866e
 set namedl=DMLizard
 set name=dmlizard.zip
 set variable=dmlizard
@@ -513,7 +513,7 @@ if errorlevel 1 set md5check=fail
 IF "%md5check%"=="" set md5check=pass
 if /i "%md5check%" NEQ "fail" goto:erfolgreich
 echo.
-support\sfk echo [Magenta] Fehlgeschlagen! Åberspringe Download...
+support\sfk echo [Red] Fehlgeschlagen! Åberspringe Download...
 echo.
 SET /a retry=%retry%+1
 SET /a attempt=%attempt%+1
