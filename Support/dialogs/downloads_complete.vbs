@@ -1,1 +1,1 @@
-onclick=msgbox ("Alle Downloads sind fertig!",6,"Downloads sind fertig!")
+onclick=msgbox ("Alle Downloads sind abgeschlossen!",6,"Downloads sind abgeschlossen!")
