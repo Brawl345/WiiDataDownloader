@@ -7,10 +7,11 @@ Getestet unter Windows XP, Windows 7, Windows 8 und Windows 8.1, sowohl 32- als 
 Der WiiDataDownloader der [WiiDatabase](http://wiidatabase.de) - ursprünglich veröffentlicht im Jahr 2011 als "NUSL" - downloadet Homebrews von einem Server.
 
 ## Features:
+- Externe Download-Komponente für einfacheres updaten
 - Batch-Download mit mehreren an- und abwählbaren Dateien
 - Automatisches Entpacken und Kopieren
-- MD5-Download
-- Automatische Updates
+- Downloads werden mit der MD5 überprüft
+- Automatische Updates, auch für die Download-Komponente
 - On- und Offline-Check
 - [Nützliche Zusatzfunktionen](https://github.com/Brawl345/WiiDataDownloader/wiki/Zusatzfunktionen)
 
@@ -18,7 +19,6 @@ Der WiiDataDownloader der [WiiDatabase](http://wiidatabase.de) - ursprünglich ve
 - [ ] WAD-Download
 - [ ] IOS-Download
 - [ ] App-Download (momentan nur PC-Programme)
-- [X] Download-Liste extern herunterladen (Siehe [#1](https://github.com/Brawl345/WiiDataDownloader/issues/1))
 - und vieles, vieles mehr...
 
 ## Benutzte Programme

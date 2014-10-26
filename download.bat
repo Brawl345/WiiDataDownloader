@@ -1,7 +1,8 @@
 @echo off
 :downloadcomponentupdcheck
-set downloadcomponent=20141026
+set downloadcomponent=20141026.1
 ::<---- Auto-Updater ---->
+if exist temp\skipchecks.txt (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
 if /i "%downloadcomponent%" EQU "" (set componentupdfailed=1) && (goto:datenbank)
 if /i "%downloadcomponent%" EQU "%newdownloadcomponent%" goto:datenbank
@@ -25,9 +26,7 @@ CLS
 mode con cols=100 lines=50
 TITLE WDD - W„hle Programme...
 %header%
-if /i "%false%" EQU "1" echo.
-if /i "%false%" EQU "1" echo		 %pc% ist keine gltige Eingabe.
-if /i "%false%" EQU "1" echo		 Bitte versuche es erneut!
+if /i "%false%" EQU "1" (echo.) && (echo		 %pc% ist keine gltige Eingabe.) && (echo		 Bitte versuche es erneut!)
 if /i "%componentupdfailed%" EQU "1" (echo.) && (echo		 	Die Download-Komponente konnte nicht aktualisiert werden.) && (set componentupdfailed=0)
 set pc=
 set false=0
@@ -91,6 +90,11 @@ if /i "%pc%" EQU "B" exit
 set false=1
 goto:pc
 
+:keinedownloads
+echo Bitte w„hle zuerst Downloads aus!
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:pc
+
 ::<---- Hier werden die Variablen für den Download gesetzt. Der Stern entscheidet, ob eine Datei
 ::gedownloadet wird, oder nicht ---->
 ::<---- NUSL Code ---->
@@ -126,8 +130,7 @@ if /i "%wilbrandgui%" EQU "*" (set wilbrandgui=) else (set wilbrandgui=*)
 goto:pc
 
 :pcwarteschlange
-::<---- Das Herzstück des WDD: Die Warteschlange und der anschließende Download! ---->
-::<---- Zueerst wird gezählt, wieviel gedownloadet wird ---->
+::<---- Downloads z„hlen ---->
 if exist temp\DLnames.txt del temp\DLnames.txt>nul
 setlocal ENABLEDELAYEDEXPANSION
 SET DLTOTAL=0
@@ -164,10 +167,7 @@ if /i "%wiigsc%" EQU "*" goto:wiigsc
 if /i "%wilbrandgui%" EQU "*" goto:wilbrandgui
 goto:alledownloadsfertig
 
-
-
-
-
+::<---- Downloads ---->
 
 :customizemii
 set md5=e27125f54b03326ca6c512150f5f948f
@@ -238,6 +238,8 @@ set namedl=WilBrand GUI und Launcher
 set name=wilbrandgui.zip
 set variable=wilbrandgui
 goto:startedownload
+
+::<---- Starte Download ---->
 
 :startedownload
 set /a CURRENTDL=%CURRENTDL%+1
@@ -365,8 +367,3 @@ if /i "%downloadsende%" EQU "4" exit
 
 set false=1
 goto:alledownloadsfertig
-
-:keinedownloads
-echo Bitte w„hle zuerst Downloads aus!
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:pc
