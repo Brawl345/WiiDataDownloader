@@ -18,7 +18,7 @@ Der WiiDataDownloader der [WiiDatabase](http://wiidatabase.de) - ursprünglich ve
 - [ ] WAD-Download
 - [ ] IOS-Download
 - [ ] App-Download (momentan nur PC-Programme)
-- [ ] Download-Liste extern herunterladen (Siehe [#1](https://github.com/Brawl345/WiiDataDownloader/issues/1))
+- [X] Download-Liste extern herunterladen (Siehe [#1](https://github.com/Brawl345/WiiDataDownloader/issues/1))
 - und vieles, vieles mehr...
 
 ## Benutzte Programme
