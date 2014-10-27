@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=421
+set currentversion=422
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -21,7 +21,7 @@ set Header=echo	    WiiDataDownloader %build% r%currentversion% - Heute ist der 
 mode con cols=85 lines=30
 TITLE WDD %build%-%currentversion%
 
-::<---- šberprfen, ob die Supportdateien existieren ---->
+::<---- Überprüfen, ob die Supportdateien existieren ---->
 :check
 if not exist Support\nusd.exe goto:fehlt
 if not exist Support\sfk.exe goto:fehlt
@@ -56,7 +56,7 @@ if exist temp\Optionen.bat call temp\Optionen.bat
 :onlinecheck
 set offline=1
 CLS
-if exist temp\skipchecks.txt goto:skipthings
+if /i "%skipchecks%" EQU "1" goto:skipthings
 %header%
 echo.
 echo			Initialisieren...

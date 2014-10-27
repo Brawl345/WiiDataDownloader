@@ -1,8 +1,8 @@
 @echo off
 :downloadcomponentupdcheck
-set downloadcomponent=20141026.1
+set downloadcomponent=20141027
 ::<---- Auto-Updater ---->
-if exist temp\skipchecks.txt (set componentupdfailed=1) && (goto:datenbank)
+if /i "%skipchecks%" EQU "1" (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
 if /i "%downloadcomponent%" EQU "" (set componentupdfailed=1) && (goto:datenbank)
 if /i "%downloadcomponent%" EQU "%newdownloadcomponent%" goto:datenbank
@@ -55,8 +55,8 @@ if /i "%wiibama%" NEQ "*" echo	 [8] Wii Backup Manager
 if /i "%wiibama%" EQU "*" echo							  	 	 [8] Wii Backup Manager
 if /i "%wiigsc%" NEQ "*" echo	 [9] WiiGSC
 if /i "%wiigsc%" EQU "*" echo							  	 	 [9] WiiGSC
-if /i "%wilbrandgui%" NEQ "*" echo	 [10] WilBrand GUI
-if /i "%wilbrandgui%" EQU "*" echo							  	 	 [10] WilBrand GUI
+if /i "%wilbrandlauncher%" NEQ "*" echo	 [10] WilBrand Launcher
+if /i "%wilbrandlauncher%" EQU "*" echo							  	 	 [10] WilBrand Launcher
 echo.
 echo.
 echo			[D] Starte Download
@@ -77,7 +77,7 @@ if /i "%pc%" EQU "6" goto:activateusbgxtheme
 if /i "%pc%" EQU "7" goto:activatewbfsfat
 if /i "%pc%" EQU "8" goto:activatewiibama
 if /i "%pc%" EQU "9" goto:activatewiigsc
-if /i "%pc%" EQU "10" goto:activatewilbrandgui
+if /i "%pc%" EQU "10" goto:activatewilbrandlauncher
 
 if /i "%pc%" EQU "D" goto:pcwarteschlange
 
@@ -125,8 +125,8 @@ goto:pc
 :activatewiigsc
 if /i "%wiigsc%" EQU "*" (set wiigsc=) else (set wiigsc=*)
 goto:pc
-:activatewilbrandgui
-if /i "%wilbrandgui%" EQU "*" (set wilbrandgui=) else (set wilbrandgui=*)
+:activatewilbrandlauncher
+if /i "%wilbrandlauncher%" EQU "*" (set wilbrandlauncher=) else (set wilbrandlauncher=*)
 goto:pc
 
 :pcwarteschlange
@@ -144,7 +144,7 @@ if /i "%usbgxtheme%" EQU "*" echo		USBLoader GX Theme Creator>> temp\DLnames.txt
 if /i "%wbfsfat%" EQU "*" echo		WBFS2FAT>> temp\DLnames.txt
 if /i "%wiibama%" EQU "*" echo		Wii Backup Manager>> temp\DLnames.txt
 if /i "%wiigsc%" EQU "*" echo		WiiGSC>> temp\DLnames.txt
-if /i "%wilbrandgui%" EQU "*" echo		WilBrand GUI>> temp\DLnames.txt
+if /i "%wilbrandlauncher%" EQU "*" echo		WilBrand Launcher>> temp\DLnames.txt
 if exist temp\DLnames.txt for /f "delims=" %%i in (temp\DLnames.txt) do set /a DLTOTAL=!DLTOTAL!+1
 setlocal DISABLEDELAYEDEXPANSION
 if /i "%DLTOTAL%" EQU "0" goto:keinedownloads
@@ -164,7 +164,7 @@ if /i "%usbgxtheme%" EQU "*" goto:usbgxtheme
 if /i "%wbfsfat%" EQU "*" goto:wbfsfat
 if /i "%wiibama%" EQU "*" goto:wiibama
 if /i "%wiigsc%" EQU "*" goto:wiigsc
-if /i "%wilbrandgui%" EQU "*" goto:wilbrandgui
+if /i "%wilbrandlauncher%" EQU "*" goto:wilbrandlauncher
 goto:alledownloadsfertig
 
 ::<---- Downloads ---->
@@ -177,7 +177,7 @@ set variable=customizemii
 goto:startedownload
 
 :devkitppc
-set md5=c28c227e2e78234a082bec02996258ab
+set md5=a33ff8a5dd8ed8489a520213562374ea
 set namedl=DevkitPro Installer
 set name=devkitpro.zip
 set variable=devkitppc
@@ -191,52 +191,52 @@ set variable=dmlizard
 goto:startedownload
 
 :nusd
-set md5=16728c00da1845f4b0486c6564d8e5fc
+set md5=87eabe772e26e3b06602503fec245a56
 set namedl=NUS Downloader
 set name=nusd.zip
 set variable=nusd
 goto:startedownload
 
 :showmiiwads
-set md5=cd76b0f6f404daeb04f66787dcdd4bcc
+set md5=f26b6658a525cf0528a1c40b1a0c48d7
 set namedl=ShowMiiWads
 set name=showmiiwads.zip
 set variable=showmiiwads
 goto:startedownload
 
 :usbgxtheme
-set md5=d4507d1ba007927f5dfb9c0d8673e580
+set md5=3224d56b4b37b62a86e737cdb93f3b36
 set namedl=USBLoader GX Theme Creator
 set name=usbloadergxthemecreator.zip
 set variable=usbgxtheme
 goto:startedownload
 
 :wbfsfat
-set md5=7f8f84a288f6217f9fcd16f9e588e46f
+set md5=155e1aa6ccf5b2f41480026a6b57e462
 set namedl=WBFS2FAT
 set name=wbfsfat.zip
 set variable=wbfsfat
 goto:startedownload
 
 :wiibama
-set md5=5b52f0825415fe448111080edff1a8c8
+set md5=01790f4df12e344cce52309d8ba7f640
 set namedl=Wii Backup Manager
 set name=wiibackupmanager.zip
 set variable=wiibama
 goto:startedownload
 
 :wiigsc
-set md5=351288be570364672fe26272cd743f8b
+set md5=16e6ed82403caca1b172e8918ae4ab8a
 set namedl=WiiGSC
-set name=wiigscinstaller.zip
+set name=wiigsc.zip
 set variable=wiigsc
 goto:startedownload
 
-:wilbrandgui
-set md5=cbeb3af96d89eb31d8ff647cc62bbe4d
-set namedl=WilBrand GUI und Launcher
-set name=wilbrandgui.zip
-set variable=wilbrandgui
+:wilbrandlauncher
+set md5=a0b27cf7c78345a806cc95a8d88e5b60
+set namedl=WilBrand Launcher
+set name=wilbrandlauncher.zip
+set variable=wilbrandlauncher
 goto:startedownload
 
 ::<---- Starte Download ---->
@@ -356,13 +356,13 @@ set usbgxtheme=
 set wbfsfat=
 set wiibama=
 set wiigsc=
-set wilbrandgui=
+set wilbrandlauncher=
 if /i "%pc%" EQU "M" goto:eof
 set /p downloadsende= Eingabe:		
 
 if /i "%downloadsende%" EQU "1" (start explorer.exe "%cd%\Programme\") && (goto:downloadnachdialog)
 if /i "%downloadsende%" EQU "2" goto:datenbank
-if /i "%downloadsende%" EQU "3" goto:eof
+if /i "%downloadsende%" EQU "3" (endlocal) && (goto:eof)
 if /i "%downloadsende%" EQU "4" exit
 
 set false=1
