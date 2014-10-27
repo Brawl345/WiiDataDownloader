@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=422
+set currentversion=423
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -195,12 +195,14 @@ CLS
 echo.
 echo				Ich mîchte danken:
 echo.
-echo			DefenderX, pegelf, Centzilius, gantherfr, ...
-echo			Kurz: Allen meinen Freunden!
+echo			DefenderX, pegelf, Centzilius, gantherfr, Mr.DaBu, 
+echo			Akamaru, masterP, jacboy, LittleSatan, ...
+echo.			
+echo			Und allen anderen, die ich vergessen habe zu erwÑhnen!
 echo.
-echo			UND:
-echo			XFlak
-echo			Team Twiizers
+echo			UND GANZ SPEZIELL:
+echo			XFlak		- fÅr ModMii und dessen Code
+echo			Team Twiizers	- fÅr Homebrew auf der Wii
 echo.
 echo			WDD-Version: %build% r%currentversion% - Download-Komponente: %newdownloadcomponent%
 echo.
