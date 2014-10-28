@@ -1,6 +1,6 @@
 @echo off
 :downloadcomponentupdcheck
-set downloadcomponent=20141027
+set downloadcomponent=20141028
 ::<---- Auto-Updater ---->
 if /i "%skipchecks%" EQU "1" (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
@@ -294,7 +294,8 @@ del %name%
 goto:redownload
 
 :erfolgreich
-start /min/wait Support\7za x -aoa %name% -o"Programme\%namedl%" -r >NUL
+start /min/wait Support\7za e -aoa %name% -o"Programme\%namedl%" >NUL
+if exist "Programme\%namedl%\%namedl%" rmdir /s /q "Programme\%namedl%\%namedl%"
 del %name%
 support\sfk echo [Green]Download abgeschlossen!
 echo.

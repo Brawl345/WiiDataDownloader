@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=423
+set currentversion=425
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -164,6 +164,7 @@ cls
 echo.
 if /i "%false%" EQU "1" (echo.) && (echo		 %optionen% ist keine gltige Eingabe.) && (echo		 Bitte versuche es erneut!)
 set optionen=
+set false=
 echo.
 echo		[1] WDD Desktop-Shortcut erstellen
 echo		[2] WDD Startmen-Shortcut erstellen
@@ -193,7 +194,7 @@ goto:optionen
 CLS
 %header%
 echo.
-echo				Ich m”chte danken:
+echo					Ich m”chte danken:
 echo.
 echo			DefenderX, pegelf, Centzilius, gantherfr, Mr.DaBu, 
 echo			Akamaru, masterP, jacboy, LittleSatan, ...
@@ -204,7 +205,10 @@ echo			UND GANZ SPEZIELL:
 echo			XFlak		- fr ModMii und dessen Code
 echo			Team Twiizers	- fr Homebrew auf der Wii
 echo.
-echo			WDD-Version: %build% r%currentversion% - Download-Komponente: %newdownloadcomponent%
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]WDD-Version: %build% r%currentversion% - Download-Komponente: %newdownloadcomponent%
+echo.
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow](c) 2011-2014 WiiDatabase.de
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]Source-Code: https://github.com/Brawl345/WiiDataDownloader/
 echo.
 echo			Drcke eine Taste...
 pause >NUL
