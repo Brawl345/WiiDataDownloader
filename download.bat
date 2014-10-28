@@ -1,6 +1,6 @@
 @echo off
 :downloadcomponentupdcheck
-set downloadcomponent=20141028.2
+set downloadcomponent=20141028.3
 ::<---- Auto-Updater ---->
 if /i "%skipchecks%" EQU "1" (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
@@ -17,7 +17,6 @@ echo.
 echo			Aktualisieren auf %newdownloadcomponent%...
 start /min/wait support\wget -t 3 -O download.bat "%updates%/download.bat"
 goto:downloadcomponentupdcheck
-
 
 :datenbank
 if exist temp\WDD_Log.bat del temp\WDD_Log.bat
@@ -163,8 +162,8 @@ if /i "%DLTOTAL%" NEQ "1" Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \
 if /i "%DLTOTAL%" EQU "1" Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green]Das folgende Programm wird gedownloadet:
 echo.
 SET DLNUM=0
-::Loope durch die DLnames.txt f¸r JEDEN Download
-if not exist temp\DLnames.txt goto:
+::Loope durch die DLnames.txt fÅr JEDEN Download
+if not exist temp\DLnames.txt goto:keinedownloads
 for /F "tokens=*" %%A in (temp\DLnames.txt) do call :DLListe %%A
 goto:naechsterschritt
 :DLListe
@@ -178,13 +177,11 @@ echo.
 echo			[J] Ja
 echo			[N] Nein
 echo.
-REM echo			[S] Downloadliste speichern
 echo.
-set /p zusammenfassung= 	Eingabe: 
+set /p zusammenfassung= Eingabe:		
 
 if /i "%zusammenfassung%" EQU "J" goto:startedownload
 if /i "%zusammenfassung%" EQU "N" goto:datenbank
-REM if /i "%zusammenfassung%" EQU "S" goto:downloadlistespeichern
 
 set false=1
 goto:zusammenfassung
@@ -355,7 +352,7 @@ if errorlevel 1 set md5check=fail
 IF "%md5check%"=="" set md5check=pass
 if /i "%md5check%" NEQ "fail" goto:erfolgreich
 echo.
-support\sfk echo -spat \x20 \x20  [Red] Fehlgeschlagen! Åberspringe Download...
+support\sfk echo -spat \x20 \x20  [Red] Fehlgeschlagen! öberspringe Download...
 echo.
 SET /a retry=%retry%+1
 SET /a attempt=%attempt%+1
@@ -387,9 +384,7 @@ CLS
 %header%
 TITLE Download(s) abgeschlossen!
 echo.
-if /i "%false%" EQU "1" echo.
-if /i "%false%" EQU "1" echo		 %downloadsende% ist keine gÅltige Eingabe.
-if /i "%false%" EQU "1" echo		 Bitte versuche es erneut!
+if /i "%false%" EQU "1" (echo.) && (echo		 %downloadsende% ist keine gÅltige Eingabe.) && (echo		 Bitte versuche es erneut!)
 set downloadsende=
 echo			Alle Downloads sind abgeschlossen!
 echo.
@@ -409,10 +404,9 @@ echo			[2] ZurÅck zum DownloadmenÅ
 echo			[3] ZurÅck zum HauptmenÅ
 echo			[4] WDD beenden
 echo.
-set devkitppcinstall=
 echo.
 :loeschevariablen
-::<---- Hier werden die Downloadvariablen gelˆscht --->
+::<---- Hier werden die Downloadvariablen gelîscht --->
 set customizemii=
 set devkitppc=
 set dmlizard=
