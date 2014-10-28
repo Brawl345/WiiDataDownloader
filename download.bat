@@ -1,6 +1,6 @@
 @echo off
 :downloadcomponentupdcheck
-set downloadcomponent=20141028.1
+set downloadcomponent=20141028.2
 ::<---- Auto-Updater ---->
 if /i "%skipchecks%" EQU "1" (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
@@ -137,7 +137,7 @@ setlocal ENABLEDELAYEDEXPANSION
 SET DLTOTAL=0
 set CURRENTDL=0
 if /i "%customizemii%" EQU "*" echo		CustomizeMii>> temp\DLnames.txt
-if /i "%devkitppc%" EQU "*" echo		DevkitPCC>> temp\DLnames.txt
+if /i "%devkitppc%" EQU "*" echo		DevkitPPC>> temp\DLnames.txt
 if /i "%dmlizard%" EQU "*" echo		DMLizard>> temp\DLnames.txt
 if /i "%nusd%" EQU "*" echo		NUSD>> temp\DLnames.txt
 if /i "%showmiiwads%" EQU "*" echo		ShowMiiWads>> temp\DLnames.txt
@@ -149,8 +149,49 @@ if /i "%wilbrandlauncher%" EQU "*" echo		WilBrand Launcher>> temp\DLnames.txt
 if exist temp\DLnames.txt for /f "delims=" %%i in (temp\DLnames.txt) do set /a DLTOTAL=!DLTOTAL!+1
 setlocal DISABLEDELAYEDEXPANSION
 if /i "%DLTOTAL%" EQU "0" goto:keinedownloads
+
+:zusammenfassung
 CLS
-TITLE Downloade %DLTOTAL% PC-Programme...
+TITLE WDD - Zusammenfassung
+%header%
+echo.
+if /i "%false%" EQU "1" (echo.) && (echo				 %zusammenfassung% ist keine gltige Eingabe.) && (echo				 Bitte versuche es erneut!)
+set zusammenfassung=
+set false=0
+echo.
+if /i "%DLTOTAL%" NEQ "1" Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green]Die folgenden %DLTOTAL% Programme werden gedownloadet:
+if /i "%DLTOTAL%" EQU "1" Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green]Das folgende Programm wird gedownloadet:
+echo.
+SET DLNUM=0
+::Loope durch die DLnames.txt für JEDEN Download
+if not exist temp\DLnames.txt goto:
+for /F "tokens=*" %%A in (temp\DLnames.txt) do call :DLListe %%A
+goto:naechsterschritt
+:DLListe
+SET /a DLNUM=%DLNUM%+1
+echo     		 %DLNUM%) %*
+goto:EOF
+:naechsterschritt
+echo.
+echo 			Mit dem Download beginnen?
+echo.
+echo			[J] Ja
+echo			[N] Nein
+echo.
+REM echo			[S] Downloadliste speichern
+echo.
+set /p zusammenfassung= 	Eingabe: 
+
+if /i "%zusammenfassung%" EQU "J" goto:startedownload
+if /i "%zusammenfassung%" EQU "N" goto:datenbank
+REM if /i "%zusammenfassung%" EQU "S" goto:downloadlistespeichern
+
+set false=1
+goto:zusammenfassung
+
+:startedownload
+CLS
+TITLE Downloade %DLTOTAL% Programme...
 %header%
 echo.
 echo			Starte Download...
@@ -257,7 +298,7 @@ if /i "%md5check%" NEQ "fail" goto:erfolgreich
 
 :fehlgeschlagen
 echo.
-support\sfk echo -spat \x20 \x20  [Yellow] Diese Datei existiert bereits, hat aber den MD5 Test nicht bestanden
+support\sfk echo -spat \x20 \x20  [Yellow] Diese Datei existiert bereits, hat aber den MD5-Test nicht bestanden
 support\sfk echo -spat \x20 \x20  [Yellow] Die aktuelle Version der Datei wird gel”scht und die Datei wird erneut gedownloadet
 echo.
 del %name% >NUL
@@ -265,7 +306,7 @@ set /a CURRENTDL=%CURRENTDL%-1
 goto:startedownload
 
 :erfolgreich
-support\sfk echo -spat \x20 \x20  [Green]Diese Datei existiert bereits und hat den MD5 Test bestanden! Entpacke...
+support\sfk echo -spat \x20 \x20  [Green]Diese Datei existiert bereits und hat den MD5-Test bestanden! Entpacke...
 start /min/wait Support\7za x -aoa %name% -o"Programme\%namedl%" -r >NUL
 del %name%
 echo.
