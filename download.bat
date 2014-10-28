@@ -1,6 +1,6 @@
 @echo off
 :downloadcomponentupdcheck
-set downloadcomponent=20141028.3
+set downloadcomponent=20141028.4
 ::<---- Auto-Updater ---->
 if /i "%skipchecks%" EQU "1" (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
@@ -335,7 +335,7 @@ if exist %name% del %name%
 support\sfk echo -spat \x20 \x20  [Green]Download abgeschlossen!
 echo.
 if /i "%devkitppc%" EQU "*" set devkitppcinstall=1
-echo "support\sfk echo %namedl%: [Green]Erfolreich">>temp\WDD_Log.bat
+echo "support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 %namedl%: [Green]Erfolgreich">>temp\WDD_Log.bat
 set %variable%=
 goto:setzevariablen
 
@@ -367,12 +367,14 @@ if not exist "temp\WDD_Log.bat" (set problematischeDLs=0) & (goto:nocounting)
 
 support\sfk filter -quiet "temp\WDD_Log.bat" -rep _"""__ -write -yes
 
-::Z‰hle problematische Downloads
-support\sfk filter -quiet "temp\WDD_Log.bat" -+"[Red]" -write -yes
+copy /Y "temp\WDD_Log.bat" "temp\WDD_Log_Fehler.bat"
+
+::ZÑhle problematische Downloads
+support\sfk filter -quiet "temp\WDD_Log_Fehler.bat" -+"[Red]" -write -yes
 set problematischeDLs=0
 
 setlocal ENABLEDELAYEDEXPANSION
-for /f "delims=" %%i in (temp\WDD_Log.bat) do set /a problematischeDLs=!problematischeDLs!+1
+for /f "delims=" %%i in (temp\WDD_Log_Fehler.bat) do set /a problematischeDLs=!problematischeDLs!+1
 setlocal DISABLEDELAYEDEXPANSION
 
 :nocounting
@@ -383,21 +385,24 @@ if /i "%problematischeDLs%" EQU "0" (set downloadlogfailure=) else (set download
 CLS
 %header%
 TITLE Download(s) abgeschlossen!
-echo.
-if /i "%false%" EQU "1" (echo.) && (echo		 %downloadsende% ist keine gÅltige Eingabe.) && (echo		 Bitte versuche es erneut!)
+if /i "%false%" EQU "1" (echo.) && (echo 		%downloadsende% ist keine gÅltige Eingabe.) && (echo 		Bitte versuche es erneut!)
 set downloadsende=
+set false=0
+echo.
 echo			Alle Downloads sind abgeschlossen!
 echo.
 :problemlog
 ::Liste problematische Downloads
-if /i "%problematischeDLs%" EQU "0" goto:noproblems
 echo.
+if /i "%problematischeDLs%" EQU "0" goto:keineprobleme
 if /i "%DLTOTAL%" EQU "%problematischeDLs%" goto:miniskip
 echo 		Von %DLTOTAL% Downloads schlug(en) %problematischeDLs% Download(s) fehl:
 :miniskip
 if "%DLTOTAL%" EQU "%problematischeDLs%" echo 		Alle Downloads schlugen fehl:
+:keineprobleme
+if /i "%problematischeDLs%" EQU "0" Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green]%DLTOTAL% Download(s) war(en) erfolgreich:
+echo.
 call temp\WDD_Log.bat
-:noproblems
 echo.
 echo			[1] Explorer îffnen
 echo			[2] ZurÅck zum DownloadmenÅ
@@ -426,4 +431,4 @@ if /i "%downloadsende%" EQU "3" (endlocal) && (goto:eof)
 if /i "%downloadsende%" EQU "4" exit
 
 set false=1
-goto:alledownloadsfertig
+goto:downloadnachdialog
