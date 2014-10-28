@@ -1,6 +1,6 @@
 @echo off
 :downloadcomponentupdcheck
-set downloadcomponent=20141028
+set downloadcomponent=20141028.1
 ::<---- Auto-Updater ---->
 if /i "%skipchecks%" EQU "1" (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
@@ -20,6 +20,7 @@ goto:downloadcomponentupdcheck
 
 
 :datenbank
+if exist temp\WDD_Log.bat del temp\WDD_Log.bat
 :pc
 ::<---- Der Downloadbereich. Die Variablen bestimmen, was gedownloadet wird! ---->
 CLS
@@ -170,7 +171,7 @@ goto:alledownloadsfertig
 ::<---- Downloads ---->
 
 :customizemii
-set md5=e27125f54b03326ca6c512150f5f948f
+set md5=237cb5557b0810e51fdd1c13960a47b8
 set namedl=CustomizeMii
 set name=customizemii.zip
 set variable=customizemii
@@ -205,16 +206,16 @@ set variable=showmiiwads
 goto:startedownload
 
 :usbgxtheme
-set md5=3224d56b4b37b62a86e737cdb93f3b36
+set md5=cdc267c7c2e6a2da31a802ab99816911
 set namedl=USBLoader GX Theme Creator
 set name=usbloadergxthemecreator.zip
 set variable=usbgxtheme
 goto:startedownload
 
 :wbfsfat
-set md5=155e1aa6ccf5b2f41480026a6b57e462
+set md5=0754ae18df6f962c76f0f2b0fd231111
 set namedl=WBFS2FAT
-set name=wbfsfat.zip
+set name=wbfs2fat.zip
 set variable=wbfsfat
 goto:startedownload
 
@@ -233,7 +234,7 @@ set variable=wiigsc
 goto:startedownload
 
 :wilbrandlauncher
-set md5=a0b27cf7c78345a806cc95a8d88e5b60
+set md5=1e68acfe7c611b2e34e383215fe25f96
 set namedl=WilBrand Launcher
 set name=wilbrandlauncher.zip
 set variable=wilbrandlauncher
@@ -256,19 +257,18 @@ if /i "%md5check%" NEQ "fail" goto:erfolgreich
 
 :fehlgeschlagen
 echo.
-support\sfk echo [Yellow] Diese Datei existiert bereits, hat aber den MD5 Test nicht bestanden
-support\sfk echo [Yellow] Die aktueÅlle Version der Datei wird gelîscht und die Datei wird erneut gedownloadet
+support\sfk echo -spat \x20 \x20  [Yellow] Diese Datei existiert bereits, hat aber den MD5 Test nicht bestanden
+support\sfk echo -spat \x20 \x20  [Yellow] Die aktueÅlle Version der Datei wird gelîscht und die Datei wird erneut gedownloadet
 echo.
 del %name% >NUL
 set /a CURRENTDL=%CURRENTDL%-1
 goto:startedownload
 
 :erfolgreich
-support\sfk echo [Green]Diese Datei existiert bereits und hat den MD5 Test bestanden! Entpacke...
+support\sfk echo -spat \x20 \x20  [Green]Diese Datei existiert bereits und hat den MD5 Test bestanden! Entpacke...
 start /min/wait Support\7za x -aoa %name% -o"Programme\%namedl%" -r >NUL
 del %name%
 echo.
-if /i "%devkitppc%" EQU "*" set devkitppcinstall=1
 set %variable%=
 goto:setzevariablen
 
@@ -276,8 +276,6 @@ goto:setzevariablen
 start /min/wait support\wget -t 3 "%files%/%name%"
 if not exist Programme mkdir Programme
 if not exist "Programme\%namedl%" mkdir "Programme\%namedl%"
-echo.
-echo.
 set md5check=
 set md5altcheck=
 support\sfk md5 -quiet -verify %md5% %name%
@@ -287,19 +285,19 @@ if /i "%md5check%" NEQ "fail" goto:erfolgreich
 
 :fehlgeschlagen
 echo.
-support\sfk echo [Yellow] Die Datei hat den MD5 Test nicht bestanden
-support\sfk echo [Yellow] Die aktuelle Version der Datei wird gelîscht und die Datei wird erneut gedownloadet
+support\sfk echo -spat \x20 \x20  [Yellow] Die Datei hat den MD5-Test nicht bestanden
+support\sfk echo -spat \x20 \x20  [Yellow] Die aktuelle Version der Datei wird gelîscht und die Datei wird erneut gedownloadet
 echo.
-del %name%
+if exist %name% del %name%
 goto:redownload
 
 :erfolgreich
-start /min/wait Support\7za e -aoa %name% -o"Programme\%namedl%" >NUL
-if exist "Programme\%namedl%\%namedl%" rmdir /s /q "Programme\%namedl%\%namedl%"
-del %name%
-support\sfk echo [Green]Download abgeschlossen!
+start /min/wait Support\7za x -aoa %name% -o"Programme\%namedl%" >NUL
+if exist %name% del %name%
+support\sfk echo -spat \x20 \x20  [Green]Download abgeschlossen!
 echo.
 if /i "%devkitppc%" EQU "*" set devkitppcinstall=1
+echo "support\sfk echo %namedl%: [Green]Erfolreich">>temp\WDD_Log.bat
 set %variable%=
 goto:setzevariablen
 
@@ -316,16 +314,33 @@ if errorlevel 1 set md5check=fail
 IF "%md5check%"=="" set md5check=pass
 if /i "%md5check%" NEQ "fail" goto:erfolgreich
 echo.
-support\sfk echo [Red] Fehlgeschlagen! Åberspringe Download...
+support\sfk echo -spat \x20 \x20  [Red] Fehlgeschlagen! Åberspringe Download...
 echo.
 SET /a retry=%retry%+1
 SET /a attempt=%attempt%+1
-del %name%
+if exist %name% del %name%
+echo "support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 %namedl%: [Red]Invalide">>temp\WDD_Log.bat
 set %variable%=
 goto:setzevariablen
 
 :alledownloadsfertig
 start Support\dialogs\downloads_complete.vbs
+if not exist "temp\WDD_Log.bat" (set problematischeDLs=0) & (goto:nocounting)
+
+support\sfk filter -quiet "temp\WDD_Log.bat" -rep _"""__ -write -yes
+
+::Z‰hle problematische Downloads
+support\sfk filter -quiet "temp\WDD_Log.bat" -+"[Red]" -write -yes
+set problematischeDLs=0
+
+setlocal ENABLEDELAYEDEXPANSION
+for /f "delims=" %%i in (temp\WDD_Log.bat) do set /a problematischeDLs=!problematischeDLs!+1
+setlocal DISABLEDELAYEDEXPANSION
+
+:nocounting
+if /i "%problematischeDLs%" EQU "0" (set downloadlogsuccess=Erfolgreich) else (set snksuccess=)
+if /i "%problematischeDLs%" EQU "0" (set downloadlogfailure=) else (set downloadlogfailure=aber mit Fehlern)
+
 :downloadnachdialog
 CLS
 %header%
@@ -335,15 +350,24 @@ if /i "%false%" EQU "1" echo.
 if /i "%false%" EQU "1" echo		 %downloadsende% ist keine gÅltige Eingabe.
 if /i "%false%" EQU "1" echo		 Bitte versuche es erneut!
 set downloadsende=
-echo			Alle Downloads sind fertig!
-echo			Bitte wÑhle eine Aktion:
+echo			Alle Downloads sind abgeschlossen!
+echo.
+:problemlog
+::Liste problematische Downloads
+if /i "%problematischeDLs%" EQU "0" goto:noproblems
+echo.
+if /i "%DLTOTAL%" EQU "%problematischeDLs%" goto:miniskip
+echo 		Von %DLTOTAL% Downloads schlug(en) %problematischeDLs% Download(s) fehl:
+:miniskip
+if "%DLTOTAL%" EQU "%problematischeDLs%" echo 		Alle Downloads schlugen fehl:
+call temp\WDD_Log.bat
+:noproblems
 echo.
 echo			[1] Explorer îffnen
 echo			[2] ZurÅck zum DownloadmenÅ
 echo			[3] ZurÅck zum HauptmenÅ
 echo			[4] WDD beenden
 echo.
-if /i "%devkitppcinstall%" EQU "1" echo		FÅhre bitte den DevkitPro Installer aus!
 set devkitppcinstall=
 echo.
 :loeschevariablen
