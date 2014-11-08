@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=425
+set currentversion=426
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -138,6 +138,8 @@ echo			Hauptmen - Bitte w„hle eine Aktion:
 echo.
 echo			[1] Datenbank
 echo.
+echo			[M] Module laden
+echo.
 echo			[O] Optionen
 echo			[C] Credits
 echo			[B] WiiDataDownloader beenden
@@ -147,6 +149,8 @@ echo			[F] Fehler melden
 set /p menu= 	Eingabe: 
 
 if /i "%menu%" EQU "1" call download.bat
+
+if /i "%menu%" EQU "M" goto:module
 
 if /i "%menu%" EQU "O" goto:optionen
 if /i "%menu%" EQU "C" goto:credits
@@ -213,3 +217,103 @@ echo.
 echo			Drcke eine Taste...
 pause >NUL
 goto:menu
+
+:module
+dir temp\Module /a:-d /b>temp\modulliste.txt
+
+support\sfk filter -quiet temp\modulliste.txt -le+".bat" -write -yes
+
+setlocal ENABLEDELAYEDEXPANSION
+SET ModullisteTOTAL=0
+for /f "delims=" %%i in (temp\modulliste.txt) do set /a ModullisteTOTAL=!ModullisteTOTAL!+1
+setlocal DISABLEDELAYEDEXPANSION
+
+SET /a ZEILEN=%ModullisteTOTAL%+29
+if %ZEILEN% LEQ 35 goto:nichtvergroessern
+mode con cols=85 lines=%LINES%
+:nichtvergroessern
+
+CLS
+%header%
+echo.
+if /i "%false%" EQU "1" (echo.) && (echo			 %modulladen% ist keine gltige Eingabe.) && (echo			 Bitte versuche es erneut!)
+if /i "%false%" EQU "2" (echo.) && (echo				Kein valides Modul!)
+set false=
+set modulladen=
+echo				W„hle ein Modul:
+echo.
+
+
+if /i "%ModullisteTOTAL%" NEQ "0" goto:nichtnull
+
+echo				Kein Modul gefunden!
+echo.
+echo 		Um Module benutzen zu k”nnen, mssen diese als
+echo 		".bat"-Dateien in "temp\Module" liegen.
+echo 		Um ein Modul zu l”schen kannst du es einfach aus
+echo 		"temp\Module" l”schen.
+echo.
+echo 		Drcke eine Taste, um zum Men zurckzukehren.
+echo.
+pause>nul
+goto:menu
+
+:nichtnull
+
+echo.
+
+set ModullisteNUM=0
+
+for /F "tokens=*" %%A in (temp\modulliste.txt) do call :listedurchgehen %%A
+goto:skip
+:listedurchgehen
+set /a ModullisteNUM=%ModullisteNUM%+1
+set ModullisteNUMtemp=%*
+echo   			    %ModullisteNUM% = %ModullisteNUMtemp:~0,-4%
+goto:EOF
+:skip
+
+echo.
+echo.
+echo 		Um Module benutzen zu k”nnen, mssen diese als
+echo 		".bat"-Dateien in "temp\Module" liegen.
+echo 		Um ein Modul zu l”schen kannst du es einfach aus
+echo 		"temp\Module" l”schen.
+echo.
+echo			[M] Men
+echo			[B] WDD beenden
+echo.
+set /p modulladen=	Eingabe:	
+
+if /i "%modulladen%" EQU "M" (mode con cols=85 lines=30) & (goto:menu)
+if /i "%modulladen%" EQU "B" exit
+
+if "%modulladen%"=="" goto:falscheeingabe
+
+if %modulladen% LSS 1 goto:falscheeingabe
+if /i %modulladen% GTR %ModullisteNUM% goto:falscheeingabe
+
+
+set ModullisteNUM2=0
+for /F "tokens=*" %%A in (temp\modulliste.txt) do call :listedurchgehen2 %%A
+goto:skip
+:listedurchgehen2
+set AktuellesModul=%*
+set /a ModullisteNUM2=%ModullisteNUM2%+1
+if not exist "temp\DownloadQueues\%AktuellesModul%" goto:EOF
+if /i "%ModullisteNUM2%" EQU "%modulladen%" goto:skip
+goto:EOF
+
+:skip
+del temp\modulliste.txt>nul
+findStr /I /C:":endedesmoduls" "temp\Module\%AktuellesModul%" >nul
+IF ERRORLEVEL 1 (set false=2) && (goto:module)
+mode con cols=85 lines=35
+
+:ladedasmodul
+call "temp\Module\%AktuellesModul%"
+
+
+:falscheeingabe
+set false=1
+goto:module
