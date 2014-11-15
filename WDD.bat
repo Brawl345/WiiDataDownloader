@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=426
+set currentversion=428
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -96,7 +96,8 @@ goto:menu
 :update
 cls
 %header%
-Support\sfk echo -spat \x20 \x20 \x20 [Red] Deine Version ist nicht aktuell!
+echo.
+Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] Deine Version ist nicht aktuell!
 start Support\dialogs\update.vbs
 echo.
 echo			WDD aktualisiert sich jetzt auf v%newversion%...
@@ -269,7 +270,7 @@ goto:skip
 :listedurchgehen
 set /a ModullisteNUM=%ModullisteNUM%+1
 set ModullisteNUMtemp=%*
-echo   			    %ModullisteNUM% = %ModullisteNUMtemp:~0,-4%
+echo 		%ModullisteNUM% = %ModullisteNUMtemp:~0,-4%
 goto:EOF
 :skip
 
@@ -312,6 +313,7 @@ mode con cols=85 lines=35
 
 :ladedasmodul
 call "temp\Module\%AktuellesModul%"
+goto:Module
 
 
 :falscheeingabe
