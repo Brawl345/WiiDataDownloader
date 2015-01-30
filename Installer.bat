@@ -1,5 +1,6 @@
 @echo off
 COLOR 1F
+mode con cols=85 lines=30
 set url=http://wdd.wiidatabase.de
 set updates=%url%/files/update
 set updatedlname=WDD.zip
