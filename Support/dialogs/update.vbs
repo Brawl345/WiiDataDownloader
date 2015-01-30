@@ -1,1 +1,0 @@
-onclick=msgbox ("Ein Update ist verfügbar - WDD aktualisiert sich jetzt!",6,"Update verfügbar")

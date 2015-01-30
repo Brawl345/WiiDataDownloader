@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=428
+set currentversion=430
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -98,13 +98,12 @@ cls
 %header%
 echo.
 Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] Deine Version ist nicht aktuell!
-start Support\dialogs\update.vbs
 echo.
-echo			WDD aktualisiert sich jetzt auf v%newversion%...
+echo			Update auf v%newversion%...
+if exist "%updatedlname%" del "%updatedlname%"
 start /min/wait support\wget -t 3 -O WDD.zip "%UpdateDLlink%"
 echo.
 Support\7za x -aoa WDD.zip -r
-start Support\dialogs\update_erfolgreich.vbs
 del WDD.zip
 echo.
 goto:top
