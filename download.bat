@@ -1,6 +1,6 @@
 @echo off
 :downloadcomponentupdcheck
-set downloadcomponent=20141028.4
+set downloadcomponent=20150131
 ::<---- Auto-Updater ---->
 if /i "%skipchecks%" EQU "1" (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
@@ -357,7 +357,7 @@ echo.
 SET /a retry=%retry%+1
 SET /a attempt=%attempt%+1
 if exist %name% del %name%
-echo "support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 %namedl%: [Red]Invalide">>temp\WDD_Log.bat
+echo "support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 %namedl%: [Red]Fehlgeschlagen">>temp\WDD_Log.bat
 set %variable%=
 goto:setzevariablen
 
