@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=430
+set currentversion=431
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -21,7 +21,7 @@ set Header=echo	    WiiDataDownloader %build% r%currentversion% - Heute ist der 
 mode con cols=85 lines=30
 TITLE WDD %build%-%currentversion%
 
-::<---- Überprüfen, ob die Supportdateien existieren ---->
+::<---- šberprfen, ob die Supportdateien existieren ---->
 :check
 if not exist Support\nusd.exe goto:fehlt
 if not exist Support\sfk.exe goto:fehlt
@@ -52,6 +52,13 @@ exit
 if not exist temp md temp
 ::<---- Laden der Optionen ---->
 if exist temp\Optionen.bat call temp\Optionen.bat
+IF "%SD%"=="" set SD=AUF_SD_KOPIEREN
+
+::Nachchecken, ob die SD noch existiert
+if /i "%SD%" EQU "%cd%\AUF_SD_KOPIEREN" set SD=AUF_SD_KOPIEREN
+if /i "%SD:~1,1%" NEQ ":" goto:skipcheck
+if exist "%SD:~0,2%" (goto:skipcheck) else (set SD=AUF_SD_KOPIEREN)
+:skipcheck
 
 :onlinecheck
 set offline=1
@@ -173,6 +180,7 @@ echo.
 echo		[1] WDD Desktop-Shortcut erstellen
 echo		[2] WDD Startmen-Shortcut erstellen
 echo.
+echo		[SD] Ort der SD-Karte „ndern (Momentan: %SD%)
 echo.
 echo		[0] Men
 echo.
@@ -180,6 +188,9 @@ set /p optionen=	Eingabe:
 
 if /i "%optionen%" EQU "1" goto:desktopshortcut
 if /i "%optionen%" EQU "2" goto:startmenushortcut
+
+if /i "%optionen%" EQU "SD" goto:changesd
+
 if /i "%optionen%" EQU "0" goto:menu
 
 set false=1
@@ -192,6 +203,74 @@ goto:optionen
 
 :startmenushortcut
 Support\nircmd shortcut "%cd%\Starte WDD.bat" "~$folder.programs$" "WiiDataDownloader" "" "%cd%\Support\wdd.ico"
+goto:optionen
+
+:changesd
+cls
+%header%
+echo.
+if /i "%false%" EQU "1" (echo.) && (echo		 %sdtemp% ist keine gltige Eingabe.) && (echo		 Bitte versuche es erneut!)
+if /i "%false%" EQU "2" (echo.) && (echo		   %sdtemp:~0,2% existiert nicht, versuche es nochmal...)
+set sdtemp=%SD%
+set false=
+echo.
+echo		Gebe den Pfad zu deiner SD-Karte oder einem Ordner ein
+echo.
+echo			Momentan:   %SD%
+echo.
+echo		Du kannst den Ordner auch in dieses Fenster ziehen oder mit
+echo		gedrckter SHIFT-Taste auf den Ordner rechtsklicken und
+echo		"Als Pfad kopieren" w„hlen.
+echo.
+echo         Beispiele:
+echo            F:
+echo.
+echo            %%userprofile%%\Desktop\AUF_SD_KOPIEREN
+echo                  Hinweis: %%userprofile%% funktioniert nicht unter XP
+echo.
+echo            temp\AUF_SD_KOPIEREN
+echo                  Hinweis: Dies erstellt den Pfad dort, wo WDD ausgefhrt wird
+echo.
+echo            %USERPROFILE%\Desktop\AUF_SD_KOPIEREN
+echo.
+echo		[1] Standard (AUF_SD_KOPIEREN)
+echo		[2] Zurck
+echo		[0] Men
+echo.
+set /p sdtemp=	Eingabe:	
+
+::remove quotes from variable (if applicable)
+echo "set SDTEMP=%sdtemp%">temp\temp.txt
+support\sfk filter -quiet temp\temp.txt -rep _""""__>temp\temp.bat
+call temp\temp.bat
+del temp\temp.bat>nul
+del temp\temp.txt>nul
+
+if /i "%sdtemp%" EQU "0" goto:menu
+if /i "%sdtemp%" EQU "2" goto:optionen
+if /i "%sdtemp%" EQU "1" set SDTEMP=AUF_SD_KOPIEREN
+
+
+:doublecheck
+set fixslash=
+if /i "%sdtemp:~-1%" EQU "\" set fixslash=ja
+if /i "%sdtemp:~-1%" EQU "/" set fixslash=ja
+if /i "%fixslash%" EQU "ja" set sdtemp=%sdtemp:~0,-1%
+if /i "%fixslash%" EQU "ja" goto:doublecheck
+
+::<!-- Wenn der zweite Buchstabe ein : ist, checke nach, ob das Ger„t existiert -->
+if /i "%sdtemp:~1,1%" NEQ ":" goto:skipcheck
+if exist "%sdtemp:~0,2%" (goto:skipcheck) else (set false=2)
+goto:changesd
+:skipcheck
+
+set SD=%sdtemp%
+set REALDRIVE=%SD%
+
+::<!-- Speichern -->
+support\sfk filter temp\Optionen.bat -!"Set SD=" -write -yes>nul
+echo Set SD=%SD%>>temp\Optionen.bat
+
 goto:optionen
 
 :credits
