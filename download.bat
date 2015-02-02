@@ -1,6 +1,7 @@
 @echo off
+if "%header%"=="" goto:nodirectstart
 :downloadcomponentupdcheck
-set downloadcomponent=20150131
+set downloadcomponent=20150202
 ::<---- Auto-Updater ---->
 if /i "%skipchecks%" EQU "1" (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
@@ -27,7 +28,7 @@ mode con cols=100 lines=50
 TITLE WDD - W„hle Programme...
 %header%
 if /i "%false%" EQU "1" (echo.) && (echo		 %pc% ist keine gltige Eingabe.) && (echo		 Bitte versuche es erneut!)
-if /i "%componentupdfailed%" EQU "1" (echo.) && (echo		 	Die Download-Komponente konnte nicht aktualisiert werden.) && (set componentupdfailed=0)
+if /i "%componentupdfailed%" EQU "1" (echo.) && (Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]WARNUNG: Die Download-Komponente konnte nicht aktualisiert werden.) && (set componentupdfailed=0)
 set pc=
 set false=0
 echo.
@@ -432,3 +433,18 @@ if /i "%downloadsende%" EQU "4" exit
 
 set false=1
 goto:downloadnachdialog
+
+:nodirectstart
+mode con cols=85 lines=30
+CLS
+echo.
+echo.
+echo.
+echo.
+echo			Bitte starte die Download-Komponente nicht direkt!
+echo			Downloade WDD von http://wdd.wiidatabase.de/
+echo.
+echo.
+echo			Beende mit einem Tastendruck
+pause >NUL
+exit
