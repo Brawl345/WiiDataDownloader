@@ -1,7 +1,7 @@
 @echo off
 if "%header%"=="" goto:nodirectstart
 :downloadcomponentupdcheck
-set downloadcomponent=20150202
+set downloadcomponent=20150203
 ::<---- Auto-Updater ---->
 if /i "%skipchecks%" EQU "1" (set componentupdfailed=1) && (goto:datenbank)
 TITLE Suche nach Updates...
@@ -27,7 +27,7 @@ CLS
 mode con cols=100 lines=50
 TITLE WDD - WÑhle Programme...
 %header%
-if /i "%false%" EQU "1" (echo.) && (echo		 %pc% ist keine gÅltige Eingabe.) && (echo		 Bitte versuche es erneut!)
+if /i "%false%" EQU "1" (echo.) && (echo		 		%pc% ist keine gÅltige Eingabe.) && (echo		 		Bitte versuche es erneut!)
 if /i "%componentupdfailed%" EQU "1" (echo.) && (Support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]WARNUNG: Die Download-Komponente konnte nicht aktualisiert werden.) && (set componentupdfailed=0)
 set pc=
 set false=0
@@ -214,6 +214,7 @@ set md5=237cb5557b0810e51fdd1c13960a47b8
 set namedl=CustomizeMii
 set name=customizemii.zip
 set variable=customizemii
+set version=v3.11
 goto:startedownload
 
 :devkitppc
@@ -221,6 +222,7 @@ set md5=a33ff8a5dd8ed8489a520213562374ea
 set namedl=DevkitPro Installer
 set name=devkitpro.zip
 set variable=devkitppc
+set version=r26
 goto:startedownload
 
 :dmlizard
@@ -228,6 +230,7 @@ set md5=f0f75945092f6c7224a7fed1b670866e
 set namedl=DMLizard
 set name=dmlizard.zip
 set variable=dmlizard
+set version=v4.0
 goto:startedownload
 
 :nusd
@@ -235,6 +238,7 @@ set md5=87eabe772e26e3b06602503fec245a56
 set namedl=NUS Downloader
 set name=nusd.zip
 set variable=nusd
+set version=v1.9mod
 goto:startedownload
 
 :showmiiwads
@@ -242,6 +246,7 @@ set md5=f26b6658a525cf0528a1c40b1a0c48d7
 set namedl=ShowMiiWads
 set name=showmiiwads.zip
 set variable=showmiiwads
+set version=v1.4
 goto:startedownload
 
 :usbgxtheme
@@ -249,6 +254,7 @@ set md5=cdc267c7c2e6a2da31a802ab99816911
 set namedl=USBLoader GX Theme Creator
 set name=usbloadergxthemecreator.zip
 set variable=usbgxtheme
+set version=v1.05
 goto:startedownload
 
 :wbfsfat
@@ -256,6 +262,7 @@ set md5=0754ae18df6f962c76f0f2b0fd231111
 set namedl=WBFS2FAT
 set name=wbfs2fat.zip
 set variable=wbfsfat
+set version=v0.8.6
 goto:startedownload
 
 :wiibama
@@ -263,6 +270,7 @@ set md5=01790f4df12e344cce52309d8ba7f640
 set namedl=Wii Backup Manager
 set name=wiibackupmanager.zip
 set variable=wiibama
+set version=v0.4.6 Build 79
 goto:startedownload
 
 :wiigsc
@@ -270,6 +278,7 @@ set md5=16e6ed82403caca1b172e8918ae4ab8a
 set namedl=WiiGSC
 set name=wiigsc.zip
 set variable=wiigsc
+set version=v1.06b
 goto:startedownload
 
 :wilbrandlauncher
@@ -277,6 +286,7 @@ set md5=1e68acfe7c611b2e34e383215fe25f96
 set namedl=WilBrand Launcher
 set name=wilbrandlauncher.zip
 set variable=wilbrandlauncher
+set version=v9.0
 goto:startedownload
 
 ::<---- Starte Download ---->
@@ -284,7 +294,7 @@ goto:startedownload
 :startedownload
 set /a CURRENTDL=%CURRENTDL%+1
 TITLE %currentdl% von %dltotal%
-Support\sfk echo -spat \x20 \x20 [Magenta]%CURRENTDL% von %DLTOTAL%:  %namedl%
+Support\sfk echo -spat \x20 \x20 [Magenta]%CURRENTDL% von %DLTOTAL%:  %namedl% %version%
 ::<----MD5 Check ---->
 if not exist %name% goto:existiertnochnicht
 set md5check=
@@ -368,7 +378,7 @@ if not exist "temp\WDD_Log.bat" (set problematischeDLs=0) & (goto:nocounting)
 
 support\sfk filter -quiet "temp\WDD_Log.bat" -rep _"""__ -write -yes
 
-copy /Y "temp\WDD_Log.bat" "temp\WDD_Log_Fehler.bat"
+copy /Y "temp\WDD_Log.bat" "temp\WDD_Log_Fehler.bat" >NUL
 
 ::ZÑhle problematische Downloads
 support\sfk filter -quiet "temp\WDD_Log_Fehler.bat" -+"[Red]" -write -yes
