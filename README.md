@@ -1,10 +1,11 @@
-WiiDataDownloader - Ein Wii-Homebrew-Downloader für Windows
-===================
+WiiDataDownloader
+=================
 
-**Das Homebrew-Download-Programm für Windows!**
-Getestet unter Windows XP, Windows 7, Windows 8, Windows 8.1 und Windows 10, sowohl 32- als auch 64-Bit. **Windows XP wird nicht mehr unterstützt!** Wir können nicht garantieren, dass der WiiDataDownloader unter Windows XP funktioniert!
+**Ein Wii-Homebrew-Downloader für Windows!**
 
 Der WiiDataDownloader der [WiiDatabase](http://wiidatabase.de) - ursprünglich veröffentlicht im Jahr 2011 als "NUSL" - downloadet Homebrews vom WiiDatabase.de-Server.
+
+Getestet unter Windows XP, Windows 7, Windows 8, Windows 8.1 und Windows 10, sowohl 32- als auch 64-Bit. **Windows XP wird nicht mehr unterstützt!** Wir können nicht garantieren, dass der WiiDataDownloader unter Windows XP funktioniert!
 
 ## Features:
 - Externe Download-Komponente für einfacheres updaten
