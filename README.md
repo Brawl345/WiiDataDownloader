@@ -1,19 +1,19 @@
-WiiDataDownloader
+WiiDataDownloader - Ein Wii-Homebrew-Downloader fÃ¼r Windows
 ===================
 
-**Die eingestellte Nightly/Beta Version des WiiDataDownloaders, nun auf GitHub!**
-Getestet unter Windows XP, Windows 7, Windows 8 und Windows 8.1, sowohl 32- als auch 64-Bit. **Windows XP wird nicht mehr unterstützt!** Wir können nicht garantieren, dass der WiiDataDownloader unter Windows XP funktioniert!
+**Das Homebrew-Download-Programm fÃ¼r Windows!**
+Getestet unter Windows XP, Windows 7, Windows 8, Windows 8.1 und Windows 10, sowohl 32- als auch 64-Bit. **Windows XP wird nicht mehr unterstÃ¼tzt!** Wir kÃ¶nnen nicht garantieren, dass der WiiDataDownloader unter Windows XP funktioniert!
 
-Der WiiDataDownloader der [WiiDatabase](http://wiidatabase.de) - ursprünglich veröffentlicht im Jahr 2011 als "NUSL" - downloadet Homebrews von einem Server.
+Der WiiDataDownloader der [WiiDatabase](http://wiidatabase.de) - ursprÃ¼nglich verÃ¶ffentlicht im Jahr 2011 als "NUSL" - downloadet Homebrews vom WiiDatabase.de-Server.
 
 ## Features:
-- Externe Download-Komponente für einfacheres updaten
-- Batch-Download mit mehreren an- und abwählbaren Dateien
+- Externe Download-Komponente fÃ¼r einfacheres updaten
+- Batch-Download mit mehreren an- und abwÃ¤hlbaren Dateien
 - Automatisches Entpacken und Kopieren
-- Downloads werden mit der MD5 überprüft
-- Automatische Updates, auch für die Download-Komponente
+- Downloads werden mit der MD5 Ã¼berprÃ¼ft
+- Automatische Updates, auch fÃ¼r die Download-Komponente
 - On- und Offline-Check
-- [Nützliche Zusatzfunktionen](https://github.com/Brawl345/WiiDataDownloader/wiki/Zusatzfunktionen)
+- [NÃ¼tzliche Zusatzfunktionen](https://github.com/Brawl345/WiiDataDownloader/wiki/Optionen)
 
 ## To-Do
 - [ ] WAD-Download
