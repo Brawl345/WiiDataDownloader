@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=431
+set currentversion=432
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -279,8 +279,8 @@ CLS
 echo.
 echo					Ich m”chte danken:
 echo.
-echo			DefenderX, pegelf, Centzilius, gantherfr, Mr.DaBu, 
-echo			Akamaru, masterP, jacboy, LittleSatan, ...
+echo			pegelf, Mr.DaBu, DefenderX, Akamaru, gantherfr, 
+echo			Centzilius, masterP, jacboy, ...
 echo.			
 echo			Und allen anderen, die ich vergessen habe zu erw„hnen!
 echo.
