@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=432
+set currentversion=433
 set build=Pre-Alpha
 set WDDpath=%cd%
 
