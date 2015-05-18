@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=433
+set currentversion=434
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -53,11 +53,18 @@ if not exist temp md temp
 ::<---- Laden der Optionen ---->
 if exist temp\Optionen.bat call temp\Optionen.bat
 IF "%SD%"=="" set SD=AUF_SD_KOPIEREN
+if "%USB%"=="" set USB=AUF_USB_KOPIEREN
 
 ::Nachchecken, ob die SD noch existiert
 if /i "%SD%" EQU "%cd%\AUF_SD_KOPIEREN" set SD=AUF_SD_KOPIEREN
 if /i "%SD:~1,1%" NEQ ":" goto:skipcheck
 if exist "%SD:~0,2%" (goto:skipcheck) else (set SD=AUF_SD_KOPIEREN)
+:skipcheck
+
+::Nachchecken, ob USB noch existiert
+if /i "%USB%" EQU "%cd%\AUF_USB_KOPIEREN" set USB=AUF_USB_KOPIEREN
+if /i "%USB:~1,1%" NEQ ":" goto:skipcheck
+if exist "%USB:~0,2%" (goto:skipcheck) else (set USB=AUF_USB_KOPIEREN)
 :skipcheck
 
 :onlinecheck
@@ -181,6 +188,7 @@ echo		[1] WDD Desktop-Shortcut erstellen
 echo		[2] WDD StartmenÅ-Shortcut erstellen
 echo.
 echo		[SD] Ort der SD-Karte Ñndern (Momentan: %SD%)
+echo		[USB] Ort des USB-GerÑtes Ñndern (Momentan: %USB%)
 echo.
 echo		[0] MenÅ
 echo.
@@ -190,6 +198,7 @@ if /i "%optionen%" EQU "1" goto:desktopshortcut
 if /i "%optionen%" EQU "2" goto:startmenushortcut
 
 if /i "%optionen%" EQU "SD" goto:changesd
+if /i "%optionen%" EQU "USB" goto:changeusb
 
 if /i "%optionen%" EQU "0" goto:menu
 
@@ -265,11 +274,77 @@ goto:changesd
 :skipcheck
 
 set SD=%sdtemp%
-set REALDRIVE=%SD%
 
 ::<!-- Speichern -->
 support\sfk filter temp\Optionen.bat -!"Set SD=" -write -yes>nul
 echo Set SD=%SD%>>temp\Optionen.bat
+
+goto:optionen
+
+:changeusb
+cls
+%header%
+echo.
+if /i "%false%" EQU "1" (echo.) && (echo		 %usbtemp% ist keine gÅltige Eingabe.) && (echo		 Bitte versuche es erneut!)
+if /i "%false%" EQU "2" (echo.) && (echo		   %usbtemp:~0,2% existiert nicht, versuche es nochmal...)
+set sdtemp=%SD%
+set false=
+echo.
+echo		Gebe den Pfad zu deinem USB-GerÑt oder einem Ordner ein
+echo.
+echo			Momentan:   %USB%
+echo.
+echo		Du kannst den Ordner auch in dieses Fenster ziehen oder mit
+echo		gedrÅckter SHIFT-Taste auf den Ordner rechtsklicken und
+echo		"Als Pfad kopieren" wÑhlen.
+echo.
+echo         Beispiele:
+echo            G:
+echo.
+echo            %%userprofile%%\Desktop\AUF_USB_KOPIEREN
+echo                  Hinweis: %%userprofile%% funktioniert nicht unter XP
+echo.
+echo            temp\AUF_USB_KOPIEREN
+echo                  Hinweis: Dies erstellt den Pfad dort, wo WDD ausgefÅhrt wird
+echo.
+echo            %USERPROFILE%\Desktop\AUF_USB_KOPIEREN
+echo.
+echo		[1] Standard (AUF_USB_KOPIEREN)
+echo		[2] ZurÅck
+echo		[0] MenÅ
+echo.
+set /p usbtemp=	Eingabe:	
+
+::remove quotes from variable (if applicable)
+echo "set SDTEMP=%usbtemp%">temp\temp.txt
+support\sfk filter -quiet temp\temp.txt -rep _""""__>temp\temp.bat
+call temp\temp.bat
+del temp\temp.bat>nul
+del temp\temp.txt>nul
+
+if /i "%usbtemp%" EQU "0" goto:menu
+if /i "%usbtemp%" EQU "2" goto:optionen
+if /i "%usbtemp%" EQU "1" set SDTEMP=AUF_USB_KOPIEREN
+
+
+:doublecheck
+set fixslash=
+if /i "%usbtemp:~-1%" EQU "\" set fixslash=ja
+if /i "%usbtemp:~-1%" EQU "/" set fixslash=ja
+if /i "%fixslash%" EQU "ja" set usbtemp=%usbtemp:~0,-1%
+if /i "%fixslash%" EQU "ja" goto:doublecheck
+
+::<!-- Wenn der zweite Buchstabe ein : ist, checke nach, ob das GerÑt existiert -->
+if /i "%usbtemp:~1,1%" NEQ ":" goto:skipcheck
+if exist "%usbtemp:~0,2%" (goto:skipcheck) else (set false=2)
+goto:changesd
+:skipcheck
+
+set USB=%usbtemp%
+
+::<!-- Speichern -->
+support\sfk filter temp\Optionen.bat -!"Set USB=" -write -yes>nul
+echo Set USB=%USB%>>temp\Optionen.bat
 
 goto:optionen
 
