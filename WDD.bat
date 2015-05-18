@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=434
+set currentversion=435
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -74,6 +74,7 @@ if /i "%skipchecks%" EQU "1" goto:skipthings
 %header%
 echo.
 echo			Initialisieren...
+:updatecheck
 start /min/wait Support\wget -t 3 "%updates%/initialize.bat"
 if exist initialize.bat call initialize.bat
 if /i "%offline%" EQU "1" goto:offline
@@ -190,6 +191,8 @@ echo.
 echo		[SD] Ort der SD-Karte Ñndern (Momentan: %SD%)
 echo		[USB] Ort des USB-GerÑtes Ñndern (Momentan: %USB%)
 echo.
+echo		[U] Nach Updates suchen
+echo.
 echo		[0] MenÅ
 echo.
 set /p optionen=	Eingabe:	
@@ -199,6 +202,8 @@ if /i "%optionen%" EQU "2" goto:startmenushortcut
 
 if /i "%optionen%" EQU "SD" goto:changesd
 if /i "%optionen%" EQU "USB" goto:changeusb
+
+if /i "%optionen%" EQU "U" CLS && goto:updatecheck
 
 if /i "%optionen%" EQU "0" goto:menu
 
