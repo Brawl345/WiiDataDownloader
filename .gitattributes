@@ -3,3 +3,4 @@
 
 *.exe binary
 *.ico binary
+*.exe filter=lfs diff=lfs merge=lfs -crlf
