@@ -7,7 +7,7 @@ cd %curdir% >NUL
 COLOR 1F
 
 ::<---- Versionsinformationen ---->
-set currentversion=436
+set currentversion=437
 set build=Pre-Alpha
 set WDDpath=%cd%
 
@@ -370,7 +370,7 @@ echo			Team Twiizers	- fÅr Homebrew auf der Wii
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]WDD-Version: %build% r%currentversion% - Download-Komponente: %newdownloadcomponent%
 echo.
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow](c) 2011-2014 WiiDatabase.de
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow](c) 2011-2015 WiiDatabase.de
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]Source-Code: https://github.com/Brawl345/WiiDataDownloader/
 echo.
 echo			DrÅcke eine Taste...
